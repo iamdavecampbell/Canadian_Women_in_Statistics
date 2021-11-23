@@ -1,169 +1,148 @@
-\documentclass[10pt]{article}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Canadian Women In Statistics Poster
+% Latex Template
+% Slight modification from the original created by Nathaniel Johnston
+% http://www.nathanieljohnston.com/2009/08/latex-poster-template/
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\usepackage[paperwidth=210mm,%
-    paperheight=297mm,%
-    tmargin=7.5mm,%
-    rmargin=7.5mm,%
-    bmargin=7.5mm,%
-    lmargin=7.5mm,
-    vscale=0.5,%
-    hscale=0.5]{geometry}
+\documentclass[final]{beamer}
+\usepackage[scale=1.24]{beamerposter}
+\usepackage{graphicx}			% allows us to import images
 
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage{fourier, heuristica} %font
+%-----------------------------------------------------------
+% Define the column width and poster size
+% To set effective sepwid, onecolwid and twocolwid values, first choose how many columns you want and how much separation you want between columns
+% The separation I chose is 0.024 and I want 4 columns
+% Then set onecolwid to be (1-(4+1)*0.024)/4 = 0.22
+% Set twocolwid to be 2*onecolwid + sepwid = 0.464
+%-----------------------------------------------------------
 
-\usepackage{tikz}
+\newlength{\sepwid}
+\newlength{\onecolwid}
+\newlength{\twocolwid}
+\newlength{\threecolwid}
+\setlength{\paperwidth}{48in}
+\setlength{\paperheight}{36in}
+\setlength{\sepwid}{0.024\paperwidth}
+\setlength{\onecolwid}{0.22\paperwidth}
+\setlength{\twocolwid}{0.464\paperwidth}
+\setlength{\threecolwid}{0.708\paperwidth}
+\setlength{\topmargin}{-0.5in}
+\usetheme{confposter}
+\usepackage{exscale}
 
-\usetikzlibrary{arrows, calc, decorations.markings, positioning}
+%-----------------------------------------------------------
+% The next part fixes a problem with figure numbering. Thanks Nishan!
+% When including a figure in your poster, be sure that the commands are typed in the following order:
+% \begin{figure}
+% \includegraphics[...]{...}
+% \caption{...}
+% \end{figure}
+% That is, put the \caption after the \includegraphics
+%-----------------------------------------------------------
 
-\pagestyle{empty}
+\usecaptiontemplate{
+\small
+\structure{\insertcaptionname~\insertcaptionnumber:}
+\insertcaption}
 
-\makeatletter
-\newenvironment{timeline}[6]{
+%-----------------------------------------------------------
+% Define colours (see beamerthemeconfposter.sty to change these colour definitions)
+%-----------------------------------------------------------
 
-    \newcommand{\startyear}{#1}
-    \newcommand{\tlendyear}{#2}
+\setbeamercolor{block title}{fg=ngreen,bg=white}
+\setbeamercolor{block body}{fg=black,bg=white}
+\setbeamercolor{block alerted title}{fg=white,bg=dblue!70}
+\setbeamercolor{block alerted body}{fg=black,bg=dblue!10}
 
-    \newcommand{\yearcolumnwidth}{#3}
-    \newcommand{\rulecolumnwidth}{#4}
-    \newcommand{\entrycolumnwidth}{#5}
-    \newcommand{\timelineheight}{#6}
+%-----------------------------------------------------------
+% Name and authors of poster/paper/research
+%-----------------------------------------------------------
 
-    \newcommand{\templength}{}
+\title{Women in Statistics in Canada}
+\institute{Carleton University}
 
-    \newcommand{\entrycounter}{0}
-
-    % https://tex.stackexchange.com/questions/85528/checking-whether-or-not-a-node-has-been-previously-defined
-    % https://tex.stackexchange.com/questions/37709/how-can-i-know-if-a-node-is-already-defined
-    \long\def\ifnodedefined##1##2##3{%
-        \@ifundefined{pgf@sh@ns@##1}{##3}{##2}%
-    }
-
-    \newcommand{\ifnodeundefined}[2]{%
-        \ifnodedefined{##1}{}{##2}
-    }
-
-    \newcommand{\drawtimeline}{%
-        \draw[timelinerule] (\yearcolumnwidth+5pt, 0pt) -- (\yearcolumnwidth+5pt, -\timelineheight);
-        \draw (\yearcolumnwidth+0pt, -10pt) -- (\yearcolumnwidth+10pt, -10pt);
-        \draw (\yearcolumnwidth+0pt, -\timelineheight+15pt) -- (\yearcolumnwidth+10pt, -\timelineheight+15pt);
-
-        \pgfmathsetlengthmacro{\templength}{neg(add(multiply(subtract(\startyear, \startyear), divide(subtract(\timelineheight, 25), subtract(\tlendyear, \startyear))), 10))}
-        \node[year] (year-\startyear) at (\yearcolumnwidth, \templength) {\startyear};
-
-        \pgfmathsetlengthmacro{\templength}{neg(add(multiply(subtract(\tlendyear, \startyear), divide(subtract(\timelineheight, 25), subtract(\tlendyear, \startyear))), 10))}
-        \node[year] (year-\tlendyear) at (\yearcolumnwidth, \templength) {\tlendyear};
-    }
-
-    \newcommand{\entry}[2]{%
-        % #1 is the year
-        % #2 is the entry text
-
-        \pgfmathtruncatemacro{\lastentrycount}{\entrycounter}
-        \pgfmathtruncatemacro{\entrycounter}{\entrycounter + 1}
-
-        \ifdim \lastentrycount pt > 0 pt%
-            \node[entry] (entry-\entrycounter) [below of=entry-\lastentrycount] {##2};
-        \else%
-            \pgfmathsetlengthmacro{\templength}{neg(add(multiply(subtract(\startyear, \startyear), divide(subtract(\timelineheight, 25), subtract(\tlendyear, \startyear))), 10))}
-            \node[entry] (entry-\entrycounter) at (\yearcolumnwidth+\rulecolumnwidth+10pt, \templength) {##2};
-        \fi
-
-        \ifnodeundefined{year-##1}{%
-            \pgfmathsetlengthmacro{\templength}{neg(add(multiply(subtract(##1, \startyear), divide(subtract(\timelineheight, 25), subtract(\tlendyear, \startyear))), 10))}
-            \draw (\yearcolumnwidth+2.5pt, \templength) -- (\yearcolumnwidth+7.5pt, \templength);
-            \node[year] (year-##1) at (\yearcolumnwidth, \templength) {##1};
-        }
-
-        \draw ($(year-##1.east)+(2.5pt, 0pt)$) -- ($(year-##1.east)+(7.5pt, 0pt)$) -- ($(entry-\entrycounter.west)-(5pt,0)$) -- (entry-\entrycounter.west);
-    }
-
-    \newcommand{\plainentry}[2]{% plainentry won't print date in the timeline
-        % #1 is the year
-        % #2 is the entry text
-
-        \pgfmathtruncatemacro{\lastentrycount}{\entrycounter}
-        \pgfmathtruncatemacro{\entrycounter}{\entrycounter + 1}
-
-        \ifdim \lastentrycount pt > 0 pt%
-            \node[entry] (entry-\entrycounter) [below of=entry-\lastentrycount] {##2};
-        \else%
-            \pgfmathsetlengthmacro{\templength}{neg(add(multiply(subtract(\startyear, \startyear), divide(subtract(\timelineheight, 25), subtract(\tlendyear, \startyear))), 10))}
-            \node[entry] (entry-\entrycounter) at (\yearcolumnwidth+\rulecolumnwidth+10pt, \templength) {##2};
-        \fi
-
-        \ifnodeundefined{invisible-year-##1}{%
-            \pgfmathsetlengthmacro{\templength}{neg(add(multiply(subtract(##1, \startyear), divide(subtract(\timelineheight, 25), subtract(\tlendyear, \startyear))), 10))}
-            \draw (\yearcolumnwidth+2.5pt, \templength) -- (\yearcolumnwidth+7.5pt, \templength);
-            \node[year] (invisible-year-##1) at (\yearcolumnwidth, \templength) {};
-        }
-
-        \draw ($(invisible-year-##1.east)+(2.5pt, 0pt)$) -- ($(invisible-year-##1.east)+(7.5pt, 0pt)$) -- ($(entry-\entrycounter.west)-(5pt,0)$) -- (entry-\entrycounter.west);
-    }
-
-    \begin{tikzpicture}
-        \tikzstyle{entry} = [%
-            align=left,%
-            text width=\entrycolumnwidth,%
-            node distance=10mm,%
-            anchor=west]
-        \tikzstyle{year} = [anchor=east]
-        \tikzstyle{timelinerule} = [%
-            draw,%
-            decoration={markings, mark=at position 1 with {\arrow[scale=1.5]{latex'}}},%
-            postaction={decorate},%
-            shorten >=0.4pt]
-
-        \drawtimeline
-}
-{
-    \end{tikzpicture}
-    \let\startyear\@undefined
-    \let\tlendyear\@undefined
-    \let\yearcolumnwidth\@undefined
-    \let\rulecolumnwidth\@undefined
-    \let\entrycolumnwidth\@undefined
-    \let\timelineheight\@undefined
-    \let\entrycounter\@undefined
-    \let\ifnodedefined\@undefined
-    \let\ifnodeundefined\@undefined
-    \let\drawtimeline\@undefined
-    \let\entry\@undefined
-}
-\makeatother
-
+%-----------------------------------------------------------
+% Start the poster itself
+%-----------------------------------------------------------
 
 \begin{document}
-
-%\begin{timeline}{1950}{2021}{2cm}{4cm}{10cm}{18cm}
-\begin{timeline}{1950}{2021}{2cm}{4cm}{13cm}{28cm}
-\entry{1956}{The female pay act made wage discrimination based on gender against the law}
-\entry{1967}{The University of Manitoba forms Canada's first Department of Statistics}
-\entry{1969}{Isobel Loutit became chair of the Montreal Section of the American Society for Quality Control (ASQC)}
-\entry{1970}{Royal Commission on the Status of Women detailing discrimination and barriers faced by women across Canada}
-\entry{1971}{Maternity benefits added to unemployment insurance.}
-\entry{1972}{Dr. Sylvia Ostry  is the first female Chief Statistician of Canada}
-\entry{1975}{Audrey Duthie and Kathleen Kocherlakota are the first women to be elected to the Board of Directors of the Statistical Science Association of Canada, a predecessor to the Statistical Society of Canada (SSC)}
-\entry{1977}{The Canadian Human Rights Act (CHRA) was passed, prohibiting discrimination on the basis of sex, and ensuring equal pay for work of equal value.}
-\plainentry{1977}{Dr. Priscila E. (Cindy) Greenwood is awarded a grant of \$50,000 from the Peter Wall Institute of Advanced Studies for their first topic of study}
-\entry{1978}{The Canada Labour Code was amended to eliminate pregnancy as a basis for lay-off or dismissal.}
-\entry{1980}{Estella Bee Dagum receives the inaugural award of the Julius Shiskin Memorial Award for Economic Statistics, given by the Business and Economic Statistics Section of the American Statistical Association.}
-\entry{1983}{The CHRA was amended to prohibit sexual harassment and to ban discrimination on the basis of pregnancy and family or marital status.}
-\entry{1986}{The federal Employment Equity Act was introduced, aimed at redressing historic and systemic discrimination of target group populations.}
-\entry{1990}{Dr. Constance van Eeden is the first woman to receive the Gold medal of the Statistical Society of Canada.}
-\entry{1991}{Dr. Agnes Herzberg is the first female president of the Statistical Society of Canada.}
-\entry{1992}{Nancy Reid is the first statistician working in Canada to receive the COPSS Presidents' Award.}
-\entry{1992}{Lise Manchester is awarded the Canadian Journal of Statistics award or best paper.}
-\entry{1993}{K Brenda MacGibbon Taylor is the first woman to be the Chair of the Statistical Sciences Grant Selection Committee.}
-\entry{1999}{Dr. Agnes Herzberg is the first woman recipient of the SSC Distinguished service award.}
-\entry{2001}{Colleen Cutler is the first woman to be awarded the CRM-SCC Prize.}
-\entry{2002}{Jane F. Gentleman wins the first annual Janet L. Norwood Award for Outstanding Achievement by a Woman in the Statistical Sciences.}
-\entry{2007}{Agnes Herzberg is the first female to be presented with an SSC Honorary award.}
-\entry{2009}{Gail Ivanoff is the first female to be presented with an SSC Honorary award.}
-\entry{2012}{Mary Thompson is the first scientific director of Canadian Statistical Science Institute CANSSI.}
-\entry{2014}{Nancy Reid became the first female Canadian statistician to receive the order of Canada.}
-\entry{2017}{Charmaine Dean became the first female statistician to become Vice President research of a Canadian university.}
-\end{timeline}
-
+    \begin{frame}[t]
+      \begin{columns}[t]							% the [t] option aligns the column's content at the top
+        \begin{column}{\sepwid}\end{column}			% empty spacer column
+        \begin{column}{\threecolwid}
+          \begin{block}{A Timeline of Firsts for Women in Statistics in Canada}
+            \begin{timeline}{1948}{2021}{5cm}{5cm}{75cm}{68cm}
+            \small  
+            \entry{1948}{Universal Declaration of Human Rights}
+            %---
+            % 1948: Universal Declaration of Human Rights
+            % https://www.un.org/en/about-us/universal-declaration-of-human-rights
+            %---
+            \entry{1956}{The female pay act made wage discrimination based on gender against the law}
+            \entry{1960}{Voting rights inclusive of gender, race, and heritage} 
+            %---
+            % 1960: Voting rights inclusive of gender, race, and heritage (Indian status).
+            % https://electionsanddemocracy.ca/voting-rights-through-time-0/brief-history-federal-voting-rights-canada
+            %---
+            \entry{1967}{The University of Manitoba forms Canada's first Department of Statistics}
+            \entry{1969}{\textbf{Isobel Loutit} became chair of the Montreal Section of the American Society for Quality Control (ASQC)}
+            \entry{1970}{Royal Commission on the Status of Women detailing discrimination and barriers faced by women across Canada}
+            \entry{1971}{Maternity benefits added to unemployment insurance.}
+            \entry{1972}{\textbf{Dr. Sylvia Ostry} is the first female Chief Statistician of Canada}
+            \entry{1975}{\textbf{Audrey Duthie} and \textbf{Kathleen Kocherlakota} are the first women to be elected to the Board of Directors of the Statistical Science Association of Canada, a predecessor to the Statistical Society of Canada (SSC)}
+            \entry{1977}{The Canadian Human Rights Act (CHRA) was passed, prohibiting discrimination on the basis of sex, and ensuring equal pay for work of equal value.}
+            \plainentry{1977}{\textbf{Dr. Priscila E. (Cindy) Greenwood} is awarded a grant of \$50,000 from the Peter Wall Institute of Advanced Studies for their first topic of study}
+            \entry{1978}{The Canada Labour Code was amended to eliminate pregnancy as a basis for lay-off or dismissal.}
+            \entry{1980}{\textbf{Estella Bee Dagum} receives the inaugural award of the Julius Shiskin Memorial Award for Economic Statistics, given by the Business and Economic Statistics Section of the American Statistical Association.}
+            \entry{1983}{The CHRA was amended to prohibit sexual harassment and to ban discrimination on the basis of pregnancy and family or marital status.}
+            \entry{1986}{The federal Employment Equity Act was introduced, aimed at redressing historic and systemic discrimination of target group populations.}
+            \entry{1987}{\textbf{Maureen Tingley} is the first female to win Pierre Robillard award}
+            \entry{1990}{\textbf{Dr. Constance van Eeden} is the first woman to receive the Gold medal of the Statistical Society of Canada.}
+            \entry{1991}{\textbf{Dr. Agnes Herzberg} is the first female president of the Statistical Society of Canada.}
+            \entry{1992}{\textbf{Nancy Reid} is the first statistician working in Canada to receive the COPSS Presidents' Award.}
+            \entry{1992}{\textbf{Lise Manchester} is awarded the Canadian Journal of Statistics award or best paper.}
+            \entry{1993}{\textbf{K Brenda MacGibbon Taylor} is the first woman to be the Chair of the Statistical Sciences Grant Selection Committee.}
+            \entry{1999}{\textbf{Dr. Agnes Herzberg} is the first woman recipient of the SSC Distinguished service award.}
+            \entry{2001}{\textbf{Colleen Cutler} is the first woman to be awarded the CRM-SCC Prize.}
+            \entry{2002}{\textbf{Jane F. Gentleman} wins the first annual Janet L. Norwood Award for Outstanding Achievement by a Woman in the Statistical Sciences.}
+            \entry{2007}{\textbf{Agnes Herzberg} is the first female to be presented with an SSC Honorary award.}
+            \entry{2008}{Prime Minister Stephen Harper issues a statement of apology to former students of Residential Schools in Canada for the harm caused by assimilationist goals, abuse, and cultural loss.}
+            \entry{2009}{\textbf{Gail Ivanoff} is the first female to be presented with an SSC Honorary award.}
+            \entry{2012}{\textbf{Mary Thompson} is the first scientific director of Canadian Statistical Science Institute CANSSI.}
+            \entry{2014}{\textbf{Nancy Reid} became the first female Canadian statistician to receive the order of Canada.}
+            \entry{2016}{An Inquiry into Missing and Murdered Indigenous Women and Girls is launched in response to calls for action from families, communities, and organizations}
+            %---
+            % 2016: An Inquiry into Missing and Murdered Indigenous Women and Girls
+            % http://education.historicacanada.ca/files/426/Key_Moments_in_Indigenous_History_Timeline.pdf
+            % https://www.mmiwg-ffada.ca/
+            %---
+            \entry{2017}{\textbf{Charmaine Dean} became the first female statistician to become Vice President research of a Canadian university.}
+            \end{timeline}
+          \end{block}
+        \end{column}
+        \begin{column}{\sepwid}\end{column}			% empty spacer column
+        \begin{column}{\onecolwid}					 
+          \begin{alertblock}{People}
+            \begin{tabular}{ccc}
+                % Not sure if this is needed
+            \end{tabular}
+          \end{alertblock}
+          \begin{columns}[t,totalwidth=\twocolwid]
+            \begin{column}{\onecolwid}
+              \begin{block}{Acknowledgements}
+              This project was supported by the Statistiscal Society of Canada and Statistics faculty of Carleton University.
+    	        \begin{center}
+    			   \includegraphics[width=5in]{SSC.png}
+    	           \includegraphics[width=7in]{carleton.jpg}
+    			 \end{center}
+    		  \end{block}
+            \end{column}
+          \end{columns}
+          \vskip2.5ex
+        \end{column}
+      \begin{column}{\sepwid}\end{column}			% empty spacer column
+     \end{columns}
+    \end{frame}
+    
 \end{document}
