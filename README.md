@@ -11,3 +11,7 @@ We aim to provide an open, reproducible poster template with accurate, up-to-dat
 - Peter MacDonald
 - David Bellhouse
 - The University of Waterloo
+
+## License
+The source code is licensed under GNU GPL v3.
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
