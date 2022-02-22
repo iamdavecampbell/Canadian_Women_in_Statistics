@@ -1,4 +1,4 @@
-Français voir Liaison: https://ssc.ca/fr/publications/ssc-liaison/vol-36-1-fevrier-2022/recherche-commentaires-sur-un-projet-decrivant
+Français [Liaison](https://ssc.ca/fr/publications/ssc-liaison/vol-36-1-fevrier-2022/recherche-commentaires-sur-un-projet-decrivant): 
 
 # Firsts for Women in Statistics in Canada 
 
