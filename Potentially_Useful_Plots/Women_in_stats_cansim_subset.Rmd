@@ -1,0 +1,480 @@
+---
+title: "Women in Stats Stats - subset"
+author: "Dave Campbell"
+date: "October 9, 2023"
+output:
+  html_document:
+    toc: true
+    df_print: paged
+---
+
+## Basics
+
+All plots make using RMarkdown.  Code is hidden but available on request.
+```{r, message = FALSE, warning=FALSE, echo = FALSE}
+library(tidyverse)
+library(cansim)
+library(lubridate)
+```
+
+## Potential Tables
+
+Women in Stats potential
+
+```{r, echo = FALSE}
+ 
+cansim_tables = rbind(data.frame(cansim = "37-10-0018-01", about = "enrolment"),
+                  c("37-10-0077-01", "staff"),
+                  c("37-10-0144-01","full time teaching staff"),
+                  c("37-10-0228-01","distribution of academic by age etc"),
+                  c("37-10-0232-01","enrolments"),
+                  c("37-10-0233-01","enrolment, general field"),
+                  # c("37-10-0234-01","enrolment more detailed"),
+                  c("37-10-0235-01","enrolment, detailed field"),
+                  c("37-10-0108-01","number and salary probably not by gender"),
+                  c("98-10-0397-01","diplomas"),
+                  c("37-10-0166-01","research funding"),
+                  c("37-10-0172-01","tenure status"),
+                  c("13-10-0846-01","sense of purpose"),
+                  c("13-10-0848-01","future outlook"),
+                  c("37-10-0165-01","faculty characterisitcs"),
+                  c("37-10-0011-01","post secondary enrolments"),
+                  c("37-10-0012-01","grads by field of study"),
+                  c("98-10-0025-01","age gender"),
+                  c("13-10-0760-01","5 year mortality"),
+                  c("37-10-0148-01","post-secondary degree holders"),
+                  c("13-10-0378-01","highest degree disabilities"),
+                  c("37-10-0100-01","maybe age pyramid"),
+                  c("37-10-0168-01", "time use faculty")# ,
+                  # c("37-10-0168-02", "faculty earnings")
+                  )
+                  
+```
+
+
+There are `r nrow(cansim_tables)` rows...
+
+```{r, echo = FALSE}
+cache_file_list = list.files("cansim_cache/")
+```
+
+
+<!-- copy start -->
+```{r, echo = TRUE}
+row_2_use = 2
+```
+
+## Make some plots of `r cansim_tables[row_2_use,1]` describing `r cansim_tables[row_2_use,2]`
+```{r row2, cache.lazy = FALSE, results = FALSE, message = FALSE, warning = FALSE, echo = FALSE}
+if(length(grep(cache_file_list, pattern = cansim_tables[row_2_use,1]))==0){
+  data     = get_cansim(              cansim_tables[row_2_use,1]) |> rename_all(make.names) 
+  metadata = get_cansim_cube_metadata(cansim_tables[row_2_use,1]) |> rename_all(make.names) 
+  data     |> write_csv(paste0("cansim_cache/",cansim_tables[row_2_use,1],"_data.csv"))
+  metadata |> write_csv(paste0("cansim_cache/",cansim_tables[row_2_use,1],"_metadata.csv"))
+}else{
+  data     = read_csv(paste0("cansim_cache/",cansim_tables[row_2_use,1],"_data.csv"))
+  metadata = read_csv(paste0("cansim_cache/",cansim_tables[row_2_use,1],"_metadata.csv"))
+}
+```
+`r metadata$cubeTitleEn`
+<!-- copy end -->
+```{r row2plots, cache = TRUE, echo = FALSE}
+
+
+data |> dplyr::filter(GEO == "Canada")|>
+    # dplyr::filter(Highest.earned.degree %in% c("PhD (or any equivalent doctoral degree)","Masters","Bachelors"))|>
+    dplyr::filter(Highest.earned.degree  == "PhD (or any equivalent doctoral degree)")|>
+    dplyr::filter(Rank %in% c("Full professor","Associate professor", "Assistant professor")) |> 
+  select(where(~ n_distinct(.) > 1))|> 
+  mutate(Gender. = str_replace_all(Gender., pattern = "\n", replacement = ""))|>
+  dplyr::filter(Gender. %in% c("Female gender", "Male gender"))|>
+  dplyr::filter(Staff.functions == "Total staff function")|>
+  dplyr::filter(Number.and.median == "Number of full time teaching staff")|>
+# dplyr::filter(Number.and.median == "Median age of full-time teaching staff")|>
+  ggplot()+
+  geom_line(aes(x = Date, y = VALUE, colour = Gender.))+
+  facet_wrap(~Rank, scales = "free", ncol = 1)+
+  ggtitle(paste0("Number of Professors by \n Gender and Rank"))
+
+
+
+
+
+
+# now to split apart by 'staff functions'
+data |> dplyr::filter(GEO == "Canada")|>
+    # dplyr::filter(Highest.earned.degree %in% c("PhD (or any equivalent doctoral degree)","Masters","Bachelors"))|>
+    dplyr::filter(Highest.earned.degree  == "PhD (or any equivalent doctoral degree)")|>
+    dplyr::filter(Rank %in% c("Full professor","Associate professor", "Assistant professor")) |>
+  select(where(~ n_distinct(.) > 1))|>
+  mutate(Gender. = str_replace_all(Gender., pattern = "\n", replacement = ""))|>
+  dplyr::filter(Gender. %in% c("Female gender", "Male gender"))|>
+  dplyr::filter(Staff.functions != "Total staff function")|>
+  dplyr::filter(Number.and.median == "Number of full time teaching staff")|>
+  ggplot()+
+  geom_line(aes(x = Date, y = VALUE, colour = Gender.))+
+  facet_wrap(~Rank+Staff.functions, scales = "free", ncol = 2)+
+  ggtitle(paste0( "Number of Professors by \n Gender and Rank with(out) admin duties"))
+
+
+
+
+
+# percentage of senior admin roles in  'staff functions'
+
+
+data |> dplyr::filter(GEO == "Canada")|>
+    # dplyr::filter(Highest.earned.degree %in% c("PhD (or any equivalent doctoral degree)","Masters","Bachelors"))|>
+    dplyr::filter(Highest.earned.degree  == "PhD (or any equivalent doctoral degree)")|>
+    dplyr::filter(Rank %in% c("Full professor","Associate professor", "Assistant professor")) |> 
+  select(where(~ n_distinct(.) > 1))|> 
+  mutate(Gender. = str_replace_all(Gender., pattern = "\n", replacement = ""))|>
+  dplyr::filter(Gender. %in% c("Female gender", "Male gender"))|>
+  # dplyr::filter(Staff.functions != "Total staff function")|>
+  dplyr::filter(Number.and.median == "Number of full time teaching staff")|>
+  select(Date, VALUE, Gender., Rank, Staff.functions)|>
+  group_by(Date, Rank, Staff.functions)|>
+    mutate(Total_across_Gender_within_Rank = sum(VALUE))|>
+  ungroup()|>
+  pivot_wider(names_from=Gender., values_from = VALUE)|>
+  mutate(male_fraction_of_staff = `Male gender` / Total_across_Gender_within_Rank)|>
+  mutate(female_fraction_of_staff = `Female gender` / Total_across_Gender_within_Rank)|>
+  
+  ggplot()+
+  geom_line(aes(x = Date, y = female_fraction_of_staff, colour = Rank))+
+  ylim(0,1)+
+  geom_hline(yintercept = .5, color = "black", alpha = .3)+
+  facet_wrap(~Staff.functions, ncol = 1)+
+  ggtitle(paste0("Proportion of female Professors by \n Rank with(out) admin duties"))
+
+```
+
+
+
+
+
+
+<!-- copy start -->
+```{r, echo = TRUE}
+row_2_use = 3
+```
+
+## Make some plots of `r cansim_tables[row_2_use,1]` describing `r cansim_tables[row_2_use,2]`
+```{r row3, cache.lazy = FALSE, results = FALSE, message = FALSE, warning = FALSE, echo = FALSE}
+
+if(length(grep(cache_file_list, pattern = cansim_tables[row_2_use,1]))==0){
+  data     = get_cansim(              cansim_tables[row_2_use,1]) |> rename_all(make.names) 
+  metadata = get_cansim_cube_metadata(cansim_tables[row_2_use,1]) |> rename_all(make.names) 
+  data     |> write_csv(paste0("cansim_cache/",cansim_tables[row_2_use,1],"_data.csv"))
+  metadata |> write_csv(paste0("cansim_cache/",cansim_tables[row_2_use,1],"_metadata.csv"))
+}else{
+  data     = read_csv(paste0("cansim_cache/",cansim_tables[row_2_use,1],"_data.csv"))
+  metadata = read_csv(paste0("cansim_cache/",cansim_tables[row_2_use,1],"_metadata.csv"))
+}
+```
+`r metadata$cubeTitleEn`
+<!-- copy end -->
+```{r row3plots, cache = TRUE, echo = FALSE}
+
+
+data |> dplyr::filter(GEO == "Canada")|>
+  dplyr::filter(UOM == "Percent")|> 
+  mutate(Gender. = str_replace_all(Gender., pattern = "\n", replacement = ""))|>
+  dplyr::filter(Rank %in% c("Full professor","Associate professor", "Assistant professor")) |>
+  dplyr::filter(Statistics == "Proportion of full-time academic staff by gender\n")|>
+  # dplyr::filter(Statistics == "Proportion of full-time academic staff by rank")|>
+  dplyr::filter(Gender. %in% c("Female gender","Male gender"))|>
+  select(where(~ n_distinct(.) > 1))|> 
+    ggplot()+
+  geom_line(aes(x = Date, y = VALUE, colour = Gender.))+
+  geom_hline(yintercept = 50, color = "black", alpha = .3)+
+  facet_wrap(~Rank, scales = "free", ncol = 1)+
+  ggtitle(paste0( "Percent of full-time academic staff \n by gender"))
+
+```
+
+
+
+
+
+
+
+
+
+
+
+<!-- <!-- copy start --> -->
+<!-- ```{r, echo = TRUE} -->
+<!-- row_2_use = 5 -->
+<!-- ``` -->
+
+<!-- ## Make some plots of `r cansim_tables[row_2_use,1]` describing `r cansim_tables[row_2_use,2]`.  -->
+<!-- ```{r row5, cache.lazy = FALSE, results = FALSE, message = FALSE, warning = FALSE, echo = FALSE} -->
+
+<!-- if(length(grep(cache_file_list, pattern = cansim_tables[row_2_use,1]))==0){ -->
+<!--   data     = get_cansim(              cansim_tables[row_2_use,1]) |> rename_all(make.names)  -->
+<!--   metadata = get_cansim_cube_metadata(cansim_tables[row_2_use,1]) |> rename_all(make.names)  -->
+<!--   data     |> write_csv(paste0("cansim_cache/",cansim_tables[row_2_use,1],"_data.csv")) -->
+<!--   metadata |> write_csv(paste0("cansim_cache/",cansim_tables[row_2_use,1],"_metadata.csv")) -->
+<!-- }else{ -->
+<!--   data     = read_csv(paste0("cansim_cache/",cansim_tables[row_2_use,1],"_data.csv")) -->
+<!--   metadata = read_csv(paste0("cansim_cache/",cansim_tables[row_2_use,1],"_metadata.csv")) -->
+<!-- } -->
+<!-- ``` -->
+
+<!-- `r metadata$cubeTitleEn` -->
+<!-- <!-- copy end --> -->
+
+<!-- ```{r row5plots, echo = FALSE} -->
+
+<!-- degreetopic = "Mathematics and computer and information sciences" -->
+<!-- data |> dplyr::filter(GEO == "Canada")|> -->
+<!--     dplyr::filter(UOM == "Number")|>  -->
+<!--     dplyr::filter(Status.of.student.in.Canada == "Total, status of student in Canada")|>  -->
+<!--   # dplyr::filter(International.Standard.Classification.of.Education..ISCED. %in% c("Doctoral or equivalent")) |>    -->
+<!--   dplyr::filter(International.Standard.Classification.of.Education..ISCED. %in% c("Doctoral or equivalent","Master's or equivalent", "Bachelor's or equivalent")) |> -->
+<!--     dplyr::filter(Institution.type == "Total, institution type")|> -->
+<!--   dplyr::filter( Registration.status == "Total, registration status")|> -->
+<!-- dplyr::filter(Classification.of.Instructional.Programs..STEM.and.BHASE.groupings %in% degreetopic)|> -->
+<!--     dplyr::filter(Gender %in% c("Man","Woman"))|> -->
+<!--     ggplot()+ -->
+<!--     geom_line(aes(x = Date, y = VALUE, colour =  Gender))+ -->
+<!--     facet_wrap(~International.Standard.Classification.of.Education..ISCED. , scales = "free", ncol = 1)+ -->
+<!--   ggtitle(paste0( "Number per Gender in \n",degreetopic, "\n for all student types")) -->
+
+
+<!-- ``` -->
+
+
+
+
+
+
+
+
+
+<!-- copy start -->
+```{r, echo = TRUE}
+row_2_use = 7
+```
+
+## Make some plots of `r cansim_tables[row_2_use,1]` describing `r cansim_tables[row_2_use,2]`. 
+```{r row7, cache.lazy = FALSE, results = FALSE, message = FALSE, warning = FALSE, echo = FALSE}
+
+if(length(grep(cache_file_list, pattern = cansim_tables[row_2_use,1]))==0){
+  data     = get_cansim(              cansim_tables[row_2_use,1]) |> rename_all(make.names) 
+  metadata = get_cansim_cube_metadata(cansim_tables[row_2_use,1]) |> rename_all(make.names) 
+  data     |> write_csv(paste0("cansim_cache/",cansim_tables[row_2_use,1],"_data.csv"))
+  metadata |> write_csv(paste0("cansim_cache/",cansim_tables[row_2_use,1],"_metadata.csv"))
+}else{
+  data     = read_csv(paste0("cansim_cache/",cansim_tables[row_2_use,1],"_data.csv"))
+  metadata = read_csv(paste0("cansim_cache/",cansim_tables[row_2_use,1],"_metadata.csv"))
+}
+
+
+```
+
+`r metadata$cubeTitleEn`
+
+<!-- copy end -->
+
+```{r row7plots, cache = TRUE, echo = FALSE}
+# data |> dplyr::filter(GEO == "Canada")|> select(where(~ n_distinct(.) > 1))|> glimpse()
+
+
+data |> dplyr::filter(GEO == "Canada")|>
+    dplyr::filter(UOM == "Number")|> 
+    dplyr::filter(Program.type %in% c(
+      "Graduate program (above the third cycle)","Graduate program (second cycle)","Graduate program (third cycle)","Undergraduate program"))|>
+  dplyr::filter(Credential.type %in% c("Degree (includes applied degree)"))|>
+  # dplyr::filter(Credential.type %in% c("Diploma"))|>
+  dplyr::filter(Institution.type == "University")|>
+  dplyr::filter(Status.of.student.in.Canada == "Total, status of student in Canada")|>
+  dplyr::filter(Field.of.study %in% c(
+      # "Management sciences and quantitative methods [52.13]",
+      # "Biomathematics, bioinformatics, and computational biology [26.11]",
+      "Mathematics and statistics [27]"#,
+       # "Mathematics and statistics, other [27.99]",<-- basically blank 
+      # "Mathematics and computer science [30.08]"
+      )) |> 
+    dplyr::filter(Gender %in% c("Man","Woman"))|>
+    ggplot()+
+    geom_line(aes(x = Date, y = VALUE, colour =  Gender))+
+    facet_wrap(~Program.type , scales = "free", ncol = 1)+
+  ggtitle(paste0( "Number per Gender in \n Mathematics and statistics \n all student types"))
+
+```
+
+
+
+
+
+<!-- ```{r} -->
+<!-- # JUST FOCUS ON THE UNIVERSITIES -->
+
+<!-- Macleans_list = c("Simon Fraser", -->
+<!--                   "University of Victoria", -->
+<!--                   "University of Waterloo", -->
+<!--                   "York University", -->
+<!--                   "Carleton", -->
+<!--                   "Guelph", -->
+<!--                   "Memorial", -->
+<!--                   "University of New Brunswick", -->
+<!--                   "Concordia University, Quebec", -->
+<!--                   "(Toronto Metropolitan)|(Ryerson)", -->
+<!--                   "Wilfrid Laurier", -->
+<!--                   "Université du Québec à Montréal", -->
+<!--                   "Brock", -->
+<!--                   "University of Regina", -->
+<!--                   "University of Windsor", -->
+<!--                   "McGill", -->
+<!--                   "University of Toronto", -->
+<!--                   "University of British Columbia", -->
+<!--                   "McMaster University", -->
+<!--                   "University of Ottawa", -->
+<!--                   "University of Alberta", -->
+<!--                   "University of Calgary", -->
+<!--                   "Dalhousie", -->
+<!--                   "Queen's University", -->
+<!--                   "Université de Montréal", -->
+<!--                   "Université Laval, Quebec", -->
+<!--                   "Western University", -->
+<!--                   "University of Manitoba" , -->
+<!--                   "Université de Sherbrooke", -->
+<!--                   "University of Saskatchewan", -->
+<!--                   "Mount Allison University, New Brunswick", -->
+<!--                   "University of Northern British Columbia", -->
+<!--                   "Saint Mary's University, Nova Scotia", -->
+<!--                   "Bishop's University", -->
+<!--                   "Acadia University", -->
+<!--                   "University of Lethbridge", -->
+<!--                   "Trent University", -->
+<!--                   "Ontario Tech University", -->
+<!--                   "St. Francis Xavier University", -->
+<!--                   "University of Prince Edward Island", -->
+<!--                   "Lakehead University", -->
+<!--                   "Université de Moncton", -->
+<!--                   "St. Thomas University", -->
+<!--                   "University of Winnipeg", -->
+<!--                   "Laurentian University", -->
+<!--                   "Mount Saint Vincent University, Nova Scotia" -->
+<!--                   ) -->
+<!-- ``` -->
+
+
+<!-- ```{r, echo = FALSE} -->
+
+<!-- Geo_list = data |> pull(GEO)|> unique() -->
+<!-- mac_TF = str_detect(Geo_list, pattern = paste0("(",paste(Macleans_list[1:30],collapse=")|("),")")) -->
+<!-- degreetopic = c( -->
+<!--       # "Management sciences and quantitative methods [52.13]", -->
+<!--       # "Biomathematics, bioinformatics, and computational biology [26.11]", -->
+<!--       "Mathematics and statistics [27]"#, -->
+<!--        # "Mathematics and statistics, other [27.99]",<-- basically blank -->
+<!--       # "Mathematics and computer science [30.08]" -->
+<!--       ) -->
+
+
+<!-- data_mod = data|> dplyr::filter( GEO %in% Geo_list[mac_TF])|> -->
+<!-- dplyr::filter(UOM == "Number")|> -->
+<!--     dplyr::filter(Program.type %in% c( -->
+<!--       "Graduate program (above the third cycle)","Graduate program (second cycle)","Graduate program (third cycle)","Undergraduate program"))|> -->
+<!--   dplyr::filter(Credential.type %in% c("Degree (includes applied degree)"))|> -->
+<!--   # dplyr::filter(Credential.type %in% c("Diploma"))|> -->
+<!--   dplyr::filter(Institution.type == "University")|> -->
+<!--   dplyr::filter(Status.of.student.in.Canada == "Total, status of student in Canada")|> -->
+<!--   dplyr::filter(Field.of.study %in% degreetopic) |> -->
+<!--     dplyr::select(GEO, REF_DATE, Date, Program.type,Gender,VALUE)|> -->
+<!--   pivot_wider(names_from = Gender, values_from = VALUE)|> -->
+<!--   mutate(fraction_female = Woman / (Woman+Man))|> -->
+<!--   mutate(fraction_male = Man /  (Woman+Man)) -->
+
+<!-- data_university = data_mod |> dplyr::filter( GEO %in% Geo_list[mac_TF]) -->
+
+<!-- carleton = data_university |> dplyr::filter(GEO == "Carleton University, Ontario") -->
+
+
+
+
+<!-- ggplot()+ -->
+<!--     geom_line(data = data_university, aes(x = Date, y = fraction_female, colour =  GEO), alpha = .8, show.legend = FALSE)+ -->
+<!--   geom_line(data = carleton, aes(x = Date, y = fraction_female), alpha = 1,lwd = 1.25, colour =  "#000000", show.legend = FALSE)+ -->
+<!--     facet_wrap(~Program.type , scales = "free", ncol = 1)+ -->
+<!--   ggtitle(paste0("Number of Students in \n",degreetopic, "\n by university in the Maclean's top 46")) -->
+
+
+
+<!-- ``` -->
+
+
+<!-- copy start -->
+```{r, echo = TRUE}
+row_2_use = 15
+```
+
+## Make some plots of `r cansim_tables[row_2_use,1]` describing `r cansim_tables[row_2_use,2]`. 
+```{r row15, cache.lazy = FALSE, results = FALSE, message = FALSE, warning = FALSE, echo = FALSE}
+
+if(length(grep(cache_file_list, pattern = cansim_tables[row_2_use,1]))==0){
+  data     = get_cansim(              cansim_tables[row_2_use,1]) |> rename_all(make.names) 
+  metadata = get_cansim_cube_metadata(cansim_tables[row_2_use,1]) |> rename_all(make.names) 
+  data     |> write_csv(paste0("cansim_cache/",cansim_tables[row_2_use,1],"_data.csv"))
+  metadata |> write_csv(paste0("cansim_cache/",cansim_tables[row_2_use,1],"_metadata.csv"))
+}else{
+  data     = read_csv(paste0("cansim_cache/",cansim_tables[row_2_use,1],"_data.csv"))
+  metadata = read_csv(paste0("cansim_cache/",cansim_tables[row_2_use,1],"_metadata.csv"))
+}
+```
+
+`r metadata$cubeTitleEn`
+<!-- copy end -->
+```{r row15plots, cache = TRUE, echo = FALSE}
+
+data |> dplyr::filter(GEO != "Canada")|>
+    dplyr::filter(Institution.type == "University")|>
+    dplyr::filter(Program.type %in% c("Undergraduate program",
+                                      "Graduate program (second cycle)",
+                                      "Graduate program (third cycle)" )) |>
+  dplyr::filter(Field.of.study == "Mathematics, computer and information sciences [7]")|>
+  dplyr::filter(Registration.status == "Total, registration status")|>
+  dplyr::filter(Gender %in% c("Man", "Woman"))|>   
+  dplyr::filter(Credential.type == "Degree (includes applied degree)")|>
+    select(Date,Program.type,GEO, Gender, VALUE)|> 
+  group_by(Date,Program.type,GEO )|>
+  pivot_wider(values_from = VALUE, names_from = Gender)|>
+  mutate(Count_of_Men_Minus_Women = Man - Woman)|>
+  ungroup()|>
+  
+    ggplot()+
+    geom_line(aes(x = Date, y = Count_of_Men_Minus_Women, colour = GEO))+
+    facet_wrap(~Program.type, scales = "free", ncol = 1)+
+  ggtitle(paste0("Difference in counts (Men - Women) per Province in \n 'Mathematics, computer and information sciences'"))
+
+
+
+
+
+data |> dplyr::filter(GEO != "Canada")|>
+    dplyr::filter(Institution.type == "University")|>
+    dplyr::filter(Program.type %in% c("Undergraduate program",
+                                      "Graduate program (second cycle)",
+                                      "Graduate program (third cycle)" )) |>
+  dplyr::filter(Field.of.study == "Mathematics, computer and information sciences [7]")|>
+  dplyr::filter(Registration.status == "Total, registration status")|>
+  dplyr::filter(Gender %in% c("Total, gender"))|>   
+  dplyr::filter(Credential.type == "Degree (includes applied degree)")|>
+    select(Date,Program.type,GEO, Gender, VALUE)|> 
+  group_by(Date,Program.type,GEO )|>
+    ggplot()+
+    geom_line(aes(x = Date, y = VALUE, colour = GEO))+
+    facet_wrap(~Program.type, scales = "free", ncol = 1)+
+  ggtitle(paste0("Total enrolled per Province in \n 'Mathematics, computer and information sciences'"))
+
+```
+
+
+
+
+
+
+
