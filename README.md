@@ -24,3 +24,10 @@ Google Forms: https://forms.gle/XDHrZ3J5qJ5Y1e7j8
 The source code is licensed under GNU GPL v3, and compiled using LaTeX so that it can be freely distributed, modified, updated, and adapted.
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+
+
+## Notes:
+- Some groups, such as the American Statistical Association do not have a formal translation of name so these are left in English in the French poster.  This is consistent with the practice in SSC Liaison.
+
+## To be resolved:
+- There is some lack of consistency in the use of "SSC" vs "Statistical Society of Canada"
