@@ -64,7 +64,7 @@ cache_file_list = list.files("cansim_cache/")
 row_2_use = 2
 ```
 
-## Make some plots of `r cansim_tables[row_2_use,1]` describing `r cansim_tables[row_2_use,2]`
+
 ```{r row2, cache.lazy = FALSE, results = FALSE, message = FALSE, warning = FALSE, echo = FALSE}
 if(length(grep(cache_file_list, pattern = cansim_tables[row_2_use,1]))==0){
   data     = get_cansim(              cansim_tables[row_2_use,1]) |> rename_all(make.names) 
@@ -76,7 +76,9 @@ if(length(grep(cache_file_list, pattern = cansim_tables[row_2_use,1]))==0){
   metadata = read_csv(paste0("cansim_cache/",cansim_tables[row_2_use,1],"_metadata.csv"))
 }
 ```
-`r metadata$cubeTitleEn`
+
+## Make some plots of `r cansim_tables[row_2_use,1]` describing `r metadata$cubeTitleEn`
+
 <!-- copy end -->
 ```{r row2plots, cache = TRUE, echo = FALSE}
 
@@ -94,7 +96,7 @@ data |> dplyr::filter(GEO == "Canada")|>
   ggplot()+
   geom_line(aes(x = Date, y = VALUE, colour = Gender.))+
   facet_wrap(~Rank, scales = "free", ncol = 1)+
-  ggtitle(paste0("Number of Professors by \n Gender and Rank"))
+  ggtitle(paste0("Number of Professors (all disciplines) by \n Gender and Rank"))
 
 
 
@@ -114,7 +116,7 @@ data |> dplyr::filter(GEO == "Canada")|>
   ggplot()+
   geom_line(aes(x = Date, y = VALUE, colour = Gender.))+
   facet_wrap(~Rank+Staff.functions, scales = "free", ncol = 2)+
-  ggtitle(paste0( "Number of Professors by \n Gender and Rank with(out) admin duties"))
+  ggtitle(paste0( "Number of Professors  (all disciplines) by \n Gender and Rank with(out) admin duties"))
 
 
 
@@ -145,7 +147,7 @@ data |> dplyr::filter(GEO == "Canada")|>
   ylim(0,1)+
   geom_hline(yintercept = .5, color = "black", alpha = .3)+
   facet_wrap(~Staff.functions, ncol = 1)+
-  ggtitle(paste0("Proportion of female Professors by \n Rank with(out) admin duties"))
+  ggtitle(paste0("Proportion of female Professors  (all disciplines) by \n Rank with(out) admin duties"))
 
 ```
 
@@ -159,9 +161,7 @@ data |> dplyr::filter(GEO == "Canada")|>
 row_2_use = 3
 ```
 
-## Make some plots of `r cansim_tables[row_2_use,1]` describing `r cansim_tables[row_2_use,2]`
 ```{r row3, cache.lazy = FALSE, results = FALSE, message = FALSE, warning = FALSE, echo = FALSE}
-
 if(length(grep(cache_file_list, pattern = cansim_tables[row_2_use,1]))==0){
   data     = get_cansim(              cansim_tables[row_2_use,1]) |> rename_all(make.names) 
   metadata = get_cansim_cube_metadata(cansim_tables[row_2_use,1]) |> rename_all(make.names) 
@@ -172,7 +172,8 @@ if(length(grep(cache_file_list, pattern = cansim_tables[row_2_use,1]))==0){
   metadata = read_csv(paste0("cansim_cache/",cansim_tables[row_2_use,1],"_metadata.csv"))
 }
 ```
-`r metadata$cubeTitleEn`
+
+## Make some plots of `r cansim_tables[row_2_use,1]` describing `r metadata$cubeTitleEn`
 <!-- copy end -->
 ```{r row3plots, cache = TRUE, echo = FALSE}
 
@@ -188,8 +189,9 @@ data |> dplyr::filter(GEO == "Canada")|>
     ggplot()+
   geom_line(aes(x = Date, y = VALUE, colour = Gender.))+
   geom_hline(yintercept = 50, color = "black", alpha = .3)+
+  ylab("Percent")+
   facet_wrap(~Rank, scales = "free", ncol = 1)+
-  ggtitle(paste0( "Percent of full-time academic staff \n by gender"))
+  ggtitle(paste0( "Percent of full-time academic staff \n by gender  (all disciplines) "))
 
 ```
 
@@ -258,9 +260,7 @@ data |> dplyr::filter(GEO == "Canada")|>
 row_2_use = 7
 ```
 
-## Make some plots of `r cansim_tables[row_2_use,1]` describing `r cansim_tables[row_2_use,2]`. 
 ```{r row7, cache.lazy = FALSE, results = FALSE, message = FALSE, warning = FALSE, echo = FALSE}
-
 if(length(grep(cache_file_list, pattern = cansim_tables[row_2_use,1]))==0){
   data     = get_cansim(              cansim_tables[row_2_use,1]) |> rename_all(make.names) 
   metadata = get_cansim_cube_metadata(cansim_tables[row_2_use,1]) |> rename_all(make.names) 
@@ -270,11 +270,9 @@ if(length(grep(cache_file_list, pattern = cansim_tables[row_2_use,1]))==0){
   data     = read_csv(paste0("cansim_cache/",cansim_tables[row_2_use,1],"_data.csv"))
   metadata = read_csv(paste0("cansim_cache/",cansim_tables[row_2_use,1],"_metadata.csv"))
 }
-
-
 ```
 
-`r metadata$cubeTitleEn`
+## Make some plots of `r cansim_tables[row_2_use,1]` describing `r metadata$cubeTitleEn`
 
 <!-- copy end -->
 
@@ -285,7 +283,7 @@ if(length(grep(cache_file_list, pattern = cansim_tables[row_2_use,1]))==0){
 data |> dplyr::filter(GEO == "Canada")|>
     dplyr::filter(UOM == "Number")|> 
     dplyr::filter(Program.type %in% c(
-      "Graduate program (above the third cycle)","Graduate program (second cycle)","Graduate program (third cycle)","Undergraduate program"))|>
+      "Graduate program (second cycle)","Graduate program (third cycle)","Undergraduate program"))|>
   dplyr::filter(Credential.type %in% c("Degree (includes applied degree)"))|>
   # dplyr::filter(Credential.type %in% c("Diploma"))|>
   dplyr::filter(Institution.type == "University")|>
@@ -300,12 +298,49 @@ data |> dplyr::filter(GEO == "Canada")|>
     dplyr::filter(Gender %in% c("Man","Woman"))|>
     ggplot()+
     geom_line(aes(x = Date, y = VALUE, colour =  Gender))+
-    facet_wrap(~Program.type , scales = "free", ncol = 1)+
-  ggtitle(paste0( "Number per Gender in \n Mathematics and statistics \n all student types"))
+    facet_wrap(~factor(Program.type , levels = c(
+      "Undergraduate program","Graduate program (second cycle)","Graduate program (third cycle)")), 
+      scales = "free", ncol = 1)+
+  ggtitle(paste0( "Graduates per Gender in Mathematics and statistics, \n all student types"))
 
 ```
 
 
+```{r row7plotsb, cache = TRUE, echo = FALSE}
+# data |> dplyr::filter(GEO == "Canada")|> select(where(~ n_distinct(.) > 1))|> glimpse()
+
+
+data_use = data |> dplyr::filter(GEO == "Canada")|>
+    dplyr::filter(UOM == "Number")|> 
+    dplyr::filter(Program.type %in% c(
+      "Graduate program (above the third cycle)","Graduate program (second cycle)","Graduate program (third cycle)","Undergraduate program"))|>
+  dplyr::filter(Credential.type %in% c("Degree (includes applied degree)"))|>
+  # dplyr::filter(Credential.type %in% c("Diploma"))|>
+  dplyr::filter(Institution.type == "University")|>
+  dplyr::filter(Status.of.student.in.Canada == "Total, status of student in Canada")|>
+  dplyr::filter(Field.of.study %in% c(
+      # "Management sciences and quantitative methods [52.13]",
+      # "Biomathematics, bioinformatics, and computational biology [26.11]",
+      "Mathematics and statistics [27]"#,
+       # "Mathematics and statistics, other [27.99]",<-- basically blank 
+      # "Mathematics and computer science [30.08]"
+      )) |> 
+    dplyr::filter(Gender %in% c("Man","Woman")) |> 
+  select(Date, VALUE, Gender,Program.type )|>
+  pivot_wider(names_from = Gender, values_from = VALUE)|>
+  mutate(Total_count = Man + Woman)|>
+  mutate(Percent_Man = Man / Total_count * 100,
+         Percent_Woman = Woman / Total_count * 100)
+
+ data_use|> select(Percent_Woman,Percent_Man,Date,Program.type)|>
+ pivot_longer( c(Percent_Woman,Percent_Man), names_to = "Gender", values_to = "Percent")|>
+    ggplot()+
+    geom_line(aes(x = Date, y = Percent, colour =  Gender))+
+     ylim(0,100)+
+    facet_wrap(~factor(Program.type , levels = c("Undergraduate program", "Graduate program (second cycle)", "Graduate program (third cycle)")), scales = "fixed", ncol = 1)+
+  ggtitle(paste0( "Percent of graduates by student level in \n Mathematics and statistics \n by gender"))
+
+```
 
 
 
@@ -412,9 +447,7 @@ data |> dplyr::filter(GEO == "Canada")|>
 row_2_use = 15
 ```
 
-## Make some plots of `r cansim_tables[row_2_use,1]` describing `r cansim_tables[row_2_use,2]`. 
 ```{r row15, cache.lazy = FALSE, results = FALSE, message = FALSE, warning = FALSE, echo = FALSE}
-
 if(length(grep(cache_file_list, pattern = cansim_tables[row_2_use,1]))==0){
   data     = get_cansim(              cansim_tables[row_2_use,1]) |> rename_all(make.names) 
   metadata = get_cansim_cube_metadata(cansim_tables[row_2_use,1]) |> rename_all(make.names) 
@@ -426,11 +459,11 @@ if(length(grep(cache_file_list, pattern = cansim_tables[row_2_use,1]))==0){
 }
 ```
 
-`r metadata$cubeTitleEn`
+## Make some plots of `r cansim_tables[row_2_use,1]` describing `r metadata$cubeTitleEn`
 <!-- copy end -->
 ```{r row15plots, cache = TRUE, echo = FALSE}
 
-data |> dplyr::filter(GEO != "Canada")|>
+data_use = data |> dplyr::filter(GEO != "Canada")|>
     dplyr::filter(Institution.type == "University")|>
     dplyr::filter(Program.type %in% c("Undergraduate program",
                                       "Graduate program (second cycle)",
@@ -439,7 +472,11 @@ data |> dplyr::filter(GEO != "Canada")|>
   dplyr::filter(Registration.status == "Total, registration status")|>
   dplyr::filter(Gender %in% c("Man", "Woman"))|>   
   dplyr::filter(Credential.type == "Degree (includes applied degree)")|>
-    select(Date,Program.type,GEO, Gender, VALUE)|> 
+  # select(where(~ n_distinct(.) > 1))|>
+    select(Date,Program.type,GEO, Gender, VALUE)
+
+
+data_use |>
   group_by(Date,Program.type,GEO )|>
   pivot_wider(values_from = VALUE, names_from = Gender)|>
   mutate(Count_of_Men_Minus_Women = Man - Woman)|>
@@ -447,8 +484,8 @@ data |> dplyr::filter(GEO != "Canada")|>
   
     ggplot()+
     geom_line(aes(x = Date, y = Count_of_Men_Minus_Women, colour = GEO))+
-    facet_wrap(~Program.type, scales = "free", ncol = 1)+
-  ggtitle(paste0("Difference in counts (Men - Women) per Province in \n 'Mathematics, computer and information sciences'"))
+    facet_wrap(~factor(Program.type, levels = c("Undergraduate program", "Graduate program (second cycle)", "Graduate program (third cycle)")), scales = "free", ncol = 3)+
+  ggtitle(paste0("Difference in enrolments (Men - Women) per Province in \n 'Mathematics, computer and information sciences'"))
 
 
 
@@ -463,12 +500,28 @@ data |> dplyr::filter(GEO != "Canada")|>
   dplyr::filter(Registration.status == "Total, registration status")|>
   dplyr::filter(Gender %in% c("Total, gender"))|>   
   dplyr::filter(Credential.type == "Degree (includes applied degree)")|>
-    select(Date,Program.type,GEO, Gender, VALUE)|> 
-  group_by(Date,Program.type,GEO )|>
+  # select(where(~ n_distinct(.) > 1))|>
+    select(Date,Program.type,GEO, Gender, VALUE) |> 
     ggplot()+
     geom_line(aes(x = Date, y = VALUE, colour = GEO))+
-    facet_wrap(~Program.type, scales = "free", ncol = 1)+
+    facet_wrap(~factor(Program.type, levels = c("Undergraduate program", "Graduate program (second cycle)", "Graduate program (third cycle)")), scales = "free", ncol = 3)+
   ggtitle(paste0("Total enrolled per Province in \n 'Mathematics, computer and information sciences'"))
+
+
+
+
+data_use|>
+  pivot_wider(names_from = Gender, values_from = VALUE)|>
+  mutate(Total_count = Man + Woman)|>
+  mutate(Percent_Man = Man / Total_count * 100,
+         Percent_Woman = Woman / Total_count * 100)|>
+  # pivot_longer(c(Percent_Man, Percent_Woman), names_to = "Gender", values_to = "Percent")|>
+    ggplot()+
+    # geom_line(aes(x = Date, y = Percent_Man, colour = GEO), linetype = "dashed")+
+  geom_line(aes(x = Date, y = Percent_Woman, colour = GEO), linetype = "solid")+
+  ylim(0,100)+
+    facet_wrap(~factor(Program.type, levels = c("Undergraduate program", "Graduate program (second cycle)", "Graduate program (third cycle)")), scales = "fixed", ncol = 3)+
+  ggtitle(paste0("Percent Women for Enrolments per Province in \n 'Mathematics, computer and information sciences'"))
 
 ```
 
