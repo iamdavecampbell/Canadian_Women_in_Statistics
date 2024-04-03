@@ -96,10 +96,70 @@ data |> dplyr::filter(GEO == "Canada")|>
   ggplot()+
   geom_line(aes(x = Date, y = VALUE, colour = Gender.))+
   facet_wrap(~Rank, scales = "free", ncol = 1)+
-  ggtitle(paste0("Number of Professors (all disciplines) by \n Gender and Rank"))
+  ggtitle(paste0("Number of Professors (all disciplines) by \n Gender and Rank"))  
+# 
 
 
 
+
+
+###
+
+
+data |> dplyr::filter(GEO == "Canada")|>
+    # dplyr::filter(Highest.earned.degree %in% c("PhD (or any equivalent doctoral degree)","Masters","Bachelors"))|>
+    dplyr::filter(Highest.earned.degree  == "PhD (or any equivalent doctoral degree)")|>
+    dplyr::filter(Rank %in% c("Full professor","Associate professor", "Assistant professor")) |> 
+  select(where(~ n_distinct(.) > 1))|> 
+  mutate(Gender. = str_replace_all(Gender., pattern = "\n", replacement = "")) |> 
+  mutate(Gender. = str_replace_all(Gender., pattern = "Another gender and unknown", replacement = "Other"))|>
+  dplyr::filter(!Gender. %in% c("Total gender"))|>
+  mutate(Gender. = str_replace_all(Gender., pattern = " gender", replacement = "")) |> 
+  dplyr::filter(Staff.functions == "Total staff function")|>
+  dplyr::filter(Number.and.median == "Number of full time teaching staff")|>
+# dplyr::filter(Number.and.median == "Median age of full-time teaching staff")|>
+  ggplot()+
+  geom_line(aes(x = Date, y = VALUE, colour = Gender.))+
+  ylab("Count")+
+  facet_wrap(~factor(Rank, levels=c('Full professor', 'Associate professor', 'Assistant professor')),scales = "free", ncol = 1)+
+  ggtitle(paste0("Number of Professors Across All Disciplines"))  
+# ggsave(width = 6,  height = 6,units = "in",filename = "Number of Professors (all disciplines) by \n Gender and Rank.png")
+##### FRENCH
+data |> dplyr::filter(GEO == "Canada")|>
+    # dplyr::filter(Highest.earned.degree %in% c("PhD (or any equivalent doctoral degree)","Masters","Bachelors"))|>
+    dplyr::filter(Highest.earned.degree  == "PhD (or any equivalent doctoral degree)")|>
+    dplyr::filter(Rank %in% c("Full professor","Associate professor", "Assistant professor")) |> 
+  select(where(~ n_distinct(.) > 1))|> 
+  mutate(Gender. = str_replace_all(Gender., pattern = "\n", replacement = "")) |> 
+  mutate(Gender. = str_replace_all(Gender., pattern = "Another gender and unknown", replacement = "Other"))|>
+  dplyr::filter(!Gender. %in% c("Total gender"))|>
+  mutate(sexe = case_match(Gender.,
+                                   "Other" ~ "autres",
+                                   "Male gender" ~ "hommes",
+                                  "Female gender" ~ "femmes"))|>
+  
+  mutate(sexe = factor(sexe,
+                                                        levels = c(
+                                                          "femmes",
+                                                          "hommes",
+                                                          "autres")))|>
+  mutate(Gender. = str_replace_all(Gender., pattern = " gender", replacement = "")) |> 
+  dplyr::filter(Staff.functions == "Total staff function")|>
+  dplyr::filter(Number.and.median == "Number of full time teaching staff")|>
+  
+  mutate(rang = case_match(Rank,
+         "Assistant professor" ~ "Professeur(e) adjoint(e)", 
+         "Associate professor" ~ "Professeur(e) agrégé(e)",
+         "Full professor"     ~ "Professeur(e) titulaire"))|>
+# dplyr::filter(Number.and.median == "Median age of full-time teaching staff")|>
+  ggplot()+
+  geom_line(aes(x = Date, y = VALUE, colour = sexe))+
+  ylab("Taux")+
+  facet_wrap(~factor(rang, levels=c('Professeur(e) titulaire', 'Professeur(e) agrégé(e)', 'Professeur(e) adjoint(e)')),scales = "free", ncol = 1)+
+  ggtitle(paste0("Nombre de professeurs dans toutes les disciplines"))  
+# ggsave(width = 6,  height = 6,units = "in",filename = "Number of Professors (all disciplines) by \n Gender and Rank_fr.png")
+
+#######
 
 
 
@@ -116,7 +176,9 @@ data |> dplyr::filter(GEO == "Canada")|>
   ggplot()+
   geom_line(aes(x = Date, y = VALUE, colour = Gender.))+
   facet_wrap(~Rank+Staff.functions, scales = "free", ncol = 2)+
-  ggtitle(paste0( "Number of Professors  (all disciplines) by \n Gender and Rank with(out) admin duties"))
+  ggtitle(paste0( "Number of Professors  (all disciplines) by \n Gender and Rank with(out) admin duties")) 
+# ggsave(width = 6,
+#   height = 6,units = "in",filename = "Number of Professors  (all disciplines) by \n Gender and Rank with(out) admin duties.png")
 
 
 
@@ -147,7 +209,9 @@ data |> dplyr::filter(GEO == "Canada")|>
   ylim(0,1)+
   geom_hline(yintercept = .5, color = "black", alpha = .3)+
   facet_wrap(~Staff.functions, ncol = 1)+
-  ggtitle(paste0("Proportion of female Professors  (all disciplines) by \n Rank with(out) admin duties"))
+  ggtitle(paste0("Proportion of female Professors  (all disciplines) by \n Rank with(out) admin duties")) 
+# ggsave(width = 6,
+#   height = 6,units = "in",filename = "Proportion of female Professors  (all disciplines) by \n Rank with(out) admin duties.png")
 
 ```
 
@@ -191,7 +255,9 @@ data |> dplyr::filter(GEO == "Canada")|>
   geom_hline(yintercept = 50, color = "black", alpha = .3)+
   ylab("Percent")+
   facet_wrap(~Rank, scales = "free", ncol = 1)+
-  ggtitle(paste0( "Percent of full-time academic staff \n by gender  (all disciplines) "))
+  ggtitle(paste0( "Percent of full-time academic staff \n by gender  (all disciplines) ")) 
+# ggsave(width = 6,
+#   height = 6,units = "in",filename ="Percent of full-time academic staff \n by gender  (all disciplines) .png")
 
 ```
 
@@ -295,13 +361,68 @@ data |> dplyr::filter(GEO == "Canada")|>
        # "Mathematics and statistics, other [27.99]",<-- basically blank 
       # "Mathematics and computer science [30.08]"
       )) |> 
-    dplyr::filter(Gender %in% c("Man","Woman"))|>
+  mutate(Program.type = case_match(Program.type,
+                                   "Graduate program (third cycle)" ~ "Doctoral",
+                                   "Graduate program (second cycle)" ~ "Masters",
+                                   "Undergraduate program" ~ "Undergraduate"))|>
+  mutate(Gender = case_match(Gender,
+                                   "Gender unknown" ~ "Other",
+                                   "Man" ~ "Male",
+                                  "Woman" ~ "Female",
+                             "Total, gender" ~ "Total, gender"))|>
+    dplyr::filter(!Gender %in% c("Total, gender", "NA"))|>
     ggplot()+
     geom_line(aes(x = Date, y = VALUE, colour =  Gender))+
+  ylab("Count")+
     facet_wrap(~factor(Program.type , levels = c(
-      "Undergraduate program","Graduate program (second cycle)","Graduate program (third cycle)")), 
+      "Doctoral","Masters","Undergraduate")), 
       scales = "free", ncol = 1)+
-  ggtitle(paste0( "Graduates per Gender in Mathematics and statistics, \n all student types"))
+  ggtitle(paste0( "Graduates in Mathematics and Statistics"))  
+# ggsave(width = 6,  height = 6,units = "in",filename = "Graduates per Gender in Mathematics and statistics, \n all student types.png")
+
+
+
+### FRENCH:
+data |> dplyr::filter(GEO == "Canada")|>
+    dplyr::filter(UOM == "Number")|> 
+    dplyr::filter(Program.type %in% c(
+      "Graduate program (second cycle)","Graduate program (third cycle)","Undergraduate program"))|>
+  dplyr::filter(Credential.type %in% c("Degree (includes applied degree)"))|>
+  # dplyr::filter(Credential.type %in% c("Diploma"))|>
+  dplyr::filter(Institution.type == "University")|>
+  dplyr::filter(Status.of.student.in.Canada == "Total, status of student in Canada")|>
+  dplyr::filter(Field.of.study %in% c(
+      # "Management sciences and quantitative methods [52.13]",
+      # "Biomathematics, bioinformatics, and computational biology [26.11]",
+      "Mathematics and statistics [27]"#,
+       # "Mathematics and statistics, other [27.99]",<-- basically blank 
+      # "Mathematics and computer science [30.08]"
+      )) |> 
+  mutate(Program.type = case_match(Program.type,
+                                   "Graduate program (third cycle)" ~ "doctorat",
+                                   "Graduate program (second cycle)" ~ "maîtrise",
+                                   "Undergraduate program" ~ "baccalauréat"))|>
+  mutate(sexe = case_match(Gender,
+                                   "Gender unknown" ~ "autres",
+                                   "Man" ~ "male",
+                                  "Woman" ~ "female",
+                             "Total, gender" ~ "Total, gender"))|>
+  mutate(sexe = factor(sexe,
+                                                        levels = c(
+                                                          "female",
+                                                          "male",
+                                                          "autres")))|>
+    dplyr::filter(!Gender %in% c("Total, gender", "NA"))|>
+    ggplot()+
+    geom_line(aes(x = Date, y = VALUE, colour =  sexe))+
+  ylab("Taux")+
+    facet_wrap(~factor(Program.type , levels = c(
+      "doctorat","maîtrise","baccalauréat")), 
+      scales = "free", ncol = 1)+
+  ggtitle(paste0( "Diplômés en mathématiques et statistiques"))  
+# ggsave(width = 6,  height = 6,units = "in",filename = "Graduates per Gender in Mathematics and statistics, \n all student types_fr_2.png")
+
+
 
 ```
 
@@ -338,7 +459,9 @@ data_use = data |> dplyr::filter(GEO == "Canada")|>
     geom_line(aes(x = Date, y = Percent, colour =  Gender))+
      ylim(0,100)+
     facet_wrap(~factor(Program.type , levels = c("Undergraduate program", "Graduate program (second cycle)", "Graduate program (third cycle)")), scales = "fixed", ncol = 1)+
-  ggtitle(paste0( "Percent of graduates by student level in \n Mathematics and statistics \n by gender"))
+  ggtitle(paste0( "Percent of graduates by student level in \n Mathematics and statistics \n by gender"))  
+ # ggsave(width = 6,
+ #  height = 6,units = "in",filename ="Percent of graduates by student level in \n Mathematics and statistics \n by gender.png")
 
 ```
 
@@ -505,7 +628,9 @@ data |> dplyr::filter(GEO != "Canada")|>
     ggplot()+
     geom_line(aes(x = Date, y = VALUE, colour = GEO))+
     facet_wrap(~factor(Program.type, levels = c("Undergraduate program", "Graduate program (second cycle)", "Graduate program (third cycle)")), scales = "free", ncol = 3)+
-  ggtitle(paste0("Total enrolled per Province in \n 'Mathematics, computer and information sciences'"))
+  ggtitle(paste0("Total enrolled per Province in \n 'Mathematics, computer and information sciences'"))  
+# ggsave(width = 12,
+#   height = 6,units = "in",filename ="Total enrolled per Province in \n 'Mathematics, computer and information sciences'.png")
 
 
 
@@ -521,7 +646,9 @@ data_use|>
   geom_line(aes(x = Date, y = Percent_Woman, colour = GEO), linetype = "solid")+
   ylim(0,100)+
     facet_wrap(~factor(Program.type, levels = c("Undergraduate program", "Graduate program (second cycle)", "Graduate program (third cycle)")), scales = "fixed", ncol = 3)+
-  ggtitle(paste0("Percent Women for Enrolments per Province in \n 'Mathematics, computer and information sciences'"))
+  ggtitle(paste0("Percent Women for Enrolments per Province in \n 'Mathematics, computer and information sciences'"))  
+# ggsave(width = 6,
+#   height = 6,units = "in",filename ="Percent Women for Enrolments per Province in \n 'Mathematics, computer and information sciences'.png")
 
 ```
 
