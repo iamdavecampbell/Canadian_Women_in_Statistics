@@ -1,7 +1,7 @@
 
 May 31 2024: Final English poster is now online!!!!
 The LaTeX is still up to date, but we couldn't make a nice poster with code alone.  CANSSI Ontario provided design work.  The Enlish poster is [here](https://github.com/iamdavecampbell/Canadian_Women_in_Statistics/blob/main/Firsts%20for%20Women%20in%20Statistics%20Poster%20%2036%20by%2075%20inches.pdf), 
-download the poster to view as it doesn't render in the online Github.
+download the poster to view as might not render in the online Github.
 
 French copy requires considerable hands on work and is ongoing.
 
