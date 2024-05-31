@@ -1,6 +1,9 @@
 
 May 31 2024: Final English poster is now online!!!!
-The LaTeX is still up to date, but we couldn't make a nice poster with code alone.  CANSSI Ontario provided design work.
+The LaTeX is still up to date, but we couldn't make a nice poster with code alone.  CANSSI Ontario provided design work.  The Enlish poster is [here](https://github.com/iamdavecampbell/Canadian_Women_in_Statistics/blob/main/Firsts%20for%20Women%20in%20Statistics%20Poster%20%2036%20by%2075%20inches.pdf), 
+download the poster to view as it doesn't render in the online Github.
+
+French copy requires considerable hands on work and is ongoing.
 
 
 Français: Bulletin SSC [Liaison](https://ssc.ca/fr/publications/ssc-liaison/vol-36-1-fevrier-2022/recherche-commentaires-sur-un-projet-decrivant) fév 2022
@@ -15,24 +18,11 @@ Even though using a binary definition of gender is out of date, more general div
 
 To improve the long term utility, the poster is under GNU GPL v3 so that it can be freely printed, updated, and modified to include regionally important events, names, milestones, or shift towards other diversity questions.
 
-## Feedback
-The current status of the project is only a draft of the content. The current style and format should be considered a minimally sufficient placeholder until the content is finalized. We have a budgeted to improve the design once the content stabilizes.
-
-Feel free to give us feedback by using Google forms below. Contact information will only be used if we need additional clarification.
-
-Google Forms: https://forms.gle/XDHrZ3J5qJ5Y1e7j8 
-## Contributors
-- [Marieta-rita Osezua](https://www.linkedin.com/in/marietaritaosezua/)
-- [Jeeheon Kim](https://www.linkedin.com/in/jeeheon-kim/)
-
 ## License
-The source code is licensed under GNU GPL v3, and compiled using LaTeX so that it can be freely distributed, modified, updated, and adapted.
+The source code is licensed under GNU GPL v3, so that it can be freely distributed, modified, updated, and adapted.
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 
 ## Notes:
 - Some groups, such as the American Statistical Association do not have a formal translation of name so these are left in English in the French poster.  This is consistent with the practice in SSC Liaison.
-
-## To be resolved:
-- There is some lack of consistency in the use of "SSC" vs "Statistical Society of Canada"
