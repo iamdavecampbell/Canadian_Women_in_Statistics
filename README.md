@@ -23,9 +23,11 @@ The source code is licensed under GNU GPL v3, so that it can be freely distribut
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-## interns:
+## Project by:
 - [Marieta-rita Osezua](https://www.linkedin.com/in/marietaritaosezua/) journalist, initial research and refined scope.
-- [Jeeheon Kim](https://www.linkedin.com/in/jeeheon-kim/) data science intern, additional research, prototype poster
+- [Jeeheon Kim](https://www.linkedin.com/in/jeeheon-kim/) data science intern, additional research, prototype poster.
+- [Alina Rizwan](https://www.linkedin.com/in/alina-rizwan/), design of poster, editing.
+
 
 ## Notes on translation:
 - Some groups, such as the American Statistical Association do not have a formal translation of name so these are left in English in the French poster.  This is consistent with the practice in SSC Liaison.
