@@ -1,12 +1,15 @@
+## Updates
 
-May 31 2024: Final English poster is now online!!!!
+- May 31 2024: Final English poster is now online!!!!
 The LaTeX is still up to date, but we couldn't make a nice poster with code alone.  CANSSI Ontario provided design work.  The English poster is [here](https://github.com/iamdavecampbell/Canadian_Women_in_Statistics/blob/main/Firsts%20for%20Women%20in%20Statistics%20Poster%20%2036%20by%2075%20inches.pdf), 
 download the poster to view as might not render in the online Github.
 
-French copy requires considerable hands on work and is ongoing.
+- French copy requires considerable hands on work and is ongoing.
 
+- Feb 2022:
+English: SSC [Liaison](https://ssc.ca/en/publications/ssc-liaison/vol-36-1-2022-02/seeking-feedback-a-project-outlining-firsts-women) 
 
-Français: Bulletin SSC [Liaison](https://ssc.ca/fr/publications/ssc-liaison/vol-36-1-fevrier-2022/recherche-commentaires-sur-un-projet-decrivant) fév 2022
+Français: Bulletin SSC [Liaison](https://ssc.ca/fr/publications/ssc-liaison/vol-36-1-fevrier-2022/recherche-commentaires-sur-un-projet-decrivant)(https://ssc.ca/fr/publications/ssc-liaison/vol-36-1-2022-02/recherche-commentaires-sur-un-projet-decrivant-premieres) 
 
 # Firsts for Women in Statistics in Canada 
 
