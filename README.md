@@ -9,7 +9,7 @@ download the poster to view as might not render in the online Github.
 - Feb 2022:
 English: SSC [Liaison](https://ssc.ca/en/publications/ssc-liaison/vol-36-1-2022-02/seeking-feedback-a-project-outlining-firsts-women) 
 
-Français: Bulletin SSC [Liaison](https://ssc.ca/fr/publications/ssc-liaison/vol-36-1-fevrier-2022/recherche-commentaires-sur-un-projet-decrivant)(https://ssc.ca/fr/publications/ssc-liaison/vol-36-1-2022-02/recherche-commentaires-sur-un-projet-decrivant-premieres) 
+Français: Bulletin SSC [Liaison](https://ssc.ca/fr/publications/ssc-liaison/vol-36-1-2022-02/recherche-commentaires-sur-un-projet-decrivant-premieres) 
 
 # Firsts for Women in Statistics in Canada 
 
