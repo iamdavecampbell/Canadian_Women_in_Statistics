@@ -164,11 +164,12 @@ data |> dplyr::filter(GEO == "Canada")|>
   select(where(~ n_distinct(.) > 1))|> 
   mutate(Gender = str_replace_all(Gender, pattern = "\n", replacement = ""))|>
   dplyr::filter(Gender != "Total gender")|>
+  mutate(Gender = str_replace_all(Gender, pattern = "Non-binary person and Unknown gender", replacement = "Non-binary person and \n Unknown gender"))|>
   mutate(Gender = factor(Gender,
                        levels = c(
                          "Woman",
                          "Man",
-                         "Non-binary person and Unknown gender")))|>
+                         "Non-binary person and \n Unknown gender")))|>
   dplyr::filter(Staff.functions == "Total staff function")|>
   dplyr::filter(Number.and.median == "Number of full time teaching staff")|>
 # dplyr::filter(Number.and.median == "Median age of full-time teaching staff")|>
@@ -199,11 +200,12 @@ data |> dplyr::filter(GEO == "Canada")|>
   mutate(Gender = str_replace_all(Gender, pattern = "Another gender and unknown", replacement = "Other"))|>
   dplyr::filter(Gender != "Total gender")|>
   mutate(Gender = str_replace_all(Gender, pattern = " gender", replacement = "")) |>
-    mutate(Gender = factor(Gender,
+  mutate(Gender = str_replace_all(Gender, pattern = "Non-binary person and Unknown", replacement = "Non-binary person and \n Unknown gender"))|>
+  mutate(Gender = factor(Gender,
                        levels = c(
                          "Woman",
                          "Man",
-                         "Non-binary person and Unknown")))|>
+                         "Non-binary person and \n Unknown gender")))|>
   dplyr::filter(Staff.functions == "Total staff function")|>
   dplyr::filter(Number.and.median == "Number of full time teaching staff")|>
 # dplyr::filter(Number.and.median == "Median age of full-time teaching staff")|>
@@ -227,7 +229,7 @@ data |> dplyr::filter(GEO == "Canada")|>
   mutate(Gender = str_replace_all(Gender, pattern = "\n", replacement = "")) |> 
   dplyr::filter(Gender != "Total gender")|>
   mutate(sexe = case_match(Gender,
-                                   "Non-binary person and Unknown gender" ~ "Personne non-binaire et genre inconnu",
+                                   "Non-binary person and Unknown gender" ~ "Personne non-binaire et \n genre inconnu",
                                    "Man" ~ "Homme",
                                   "Woman" ~ "Femme"))|>
   
@@ -235,7 +237,7 @@ data |> dplyr::filter(GEO == "Canada")|>
                        levels = c(
                          "Femme",
                          "Homme",
-                         "Personne non-binaire et genre inconnu")))|>
+                         "Personne non-binaire et \n genre inconnu")))|>
   mutate(Gender = str_replace_all(Gender, pattern = " gender", replacement = "")) |> 
   dplyr::filter(Staff.functions == "Total staff function")|>
   dplyr::filter(Number.and.median == "Number of full time teaching staff")|>
@@ -272,13 +274,13 @@ for (rank_group in c('Full Professor', 'Associate Professor', 'Assistant Profess
     # dplyr::filter(Highest.earned.degree %in% c("PhD (or any equivalent doctoral degree)","Masters","Bachelors"))|>
     dplyr::filter(Highest.earned.degree  == "PhD (or any equivalent doctoral degree)")|>
   mutate(Gender = str_replace_all(Gender, pattern = "\n", replacement = "")) |> 
-  mutate(Gender = str_replace_all(Gender, pattern = "Another gender and unknown", replacement = "Other"))|>
-  dplyr::filter(!Gender %in% c("Total gender"))|>
+    dplyr::filter(!Gender %in% c("Total gender"))|>
+    mutate(Gender = str_replace_all(Gender, pattern = "Non-binary person and Unknown gender", replacement = "Non-binary person and \n Unknown gender"))|>
   mutate(Gender = factor(Gender,
                        levels = c(
                          "Woman",
                          "Man",
-                         "Non-binary person and Unknown gender")))|>
+                         "Non-binary person and \n Unknown gender")))|>
   dplyr::filter(Staff.functions == "Total staff function")|>
   dplyr::filter(Number.and.median == "Number of full time teaching staff")|>
 # dplyr::filter(Number.and.median == "Median age of full-time teaching staff")|>
@@ -301,10 +303,10 @@ for (rank_group in c('Full professor', 'Associate professor', 'Assistant profess
     # dplyr::filter(Highest.earned.degree %in% c("PhD (or any equivalent doctoral degree)","Masters","Bachelors"))|>
     dplyr::filter(Highest.earned.degree  == "PhD (or any equivalent doctoral degree)")|>
   mutate(Gender = str_replace_all(Gender, pattern = "\n", replacement = "")) |> 
-  mutate(Gender = str_replace_all(Gender, pattern = "Another gender and unknown", replacement = "Other"))|>
+  # mutate(Gender = str_replace_all(Gender, pattern = "Another gender and unknown", replacement = "Other"))|>
   dplyr::filter(!Gender %in% c("Total gender"))|>
   mutate(sexe = case_match(Gender,
-                         "Non-binary person and Unknown gender" ~ "Personne non-binaire et genre inconnu",
+                         "Non-binary person and Unknown gender" ~ "Personne non-binaire et\n genre inconnu",
                          "Man" ~ "Homme",
                          "Woman" ~ "Femme"))|>
   
@@ -312,7 +314,7 @@ for (rank_group in c('Full professor', 'Associate professor', 'Assistant profess
                        levels = c(
                          "Femme",
                          "Homme",
-                         "Personne non-binaire et genre inconnu")))|>
+                         "Personne non-binaire et\n genre inconnu")))|>
   mutate(Gender = str_replace_all(Gender, pattern = " gender", replacement = "")) |> 
   dplyr::filter(Staff.functions == "Total staff function")|>
   dplyr::filter(Number.and.median == "Number of full time teaching staff")|>
@@ -350,11 +352,12 @@ data |> dplyr::filter(GEO == "Canada")|>
   select(where(~ n_distinct(.) > 1))|>
   mutate(Gender = str_replace_all(Gender, pattern = "\n", replacement = ""))|>
   dplyr::filter(Gender != "Total gender")|>
-    mutate(Gender = factor(Gender,
+  mutate(Gender = str_replace_all(Gender, pattern = "Non-binary person and Unknown gender", replacement = "Non-binary person and \n Unknown gender"))|>
+  mutate(Gender = factor(Gender,
                        levels = c(
                          "Woman",
                          "Man",
-                         "Non-binary person and Unknown gender")))|>
+                         "Non-binary person and \n Unknown gender")))|>
   dplyr::filter(Staff.functions != "Total staff function")|>
   dplyr::filter(Number.and.median == "Number of full time teaching staff")|>
   ggplot()+
@@ -602,20 +605,20 @@ data |> dplyr::filter(GEO == "Canada")|>
                                    "Graduate program (second cycle)" ~ "maîtrise",
                                    "Undergraduate program" ~ "baccalauréat"))|>
   mutate(Gender = case_match(Gender,
-                             "Gender unknown" ~ "Non-binary person and Unknown gender",
+                             "Gender unknown" ~ "Non-binary person and\n Unknown gender",
                              "Man" ~ "Man",
                              "Woman" ~ "Woman",
                              "Total, gender" ~ "Total gender"))|>
     dplyr::filter(Gender != "Total gender")|>
   mutate(sexe = case_match(Gender,
-                         "Non-binary person and Unknown gender" ~ "Personne non-binaire et genre inconnu",
+                         "Non-binary person and\n Unknown gender" ~ "Personne non-binaire et\n genre inconnu",
                          "Man" ~ "Homme",
                          "Woman" ~ "Femme"))|>
    mutate(sexe = factor(sexe,
                        levels = c(
                          "Femme",
                          "Homme",
-                         "Personne non-binaire et genre inconnu")))|>
+                         "Personne non-binaire et\n genre inconnu")))|>
     dplyr::filter(!Gender %in% c("Total, gender", "NA"))|>
     ggplot()+
     geom_line(aes(x = Date, y = VALUE, colour =  sexe))+
@@ -660,7 +663,7 @@ for (prog_group in c('Doctoral', 'Masters', 'Undergraduate')){
       # "Mathematics and computer science [30.08]"
       )) |> 
      mutate(Gender = case_match(Gender,
-                                   "Gender unknown" ~ "Non-binary person and Unknown gender",
+                                   "Gender unknown" ~ "Non-binary person and\n Unknown gender",
                                    "Man" ~ "Man",
                                   "Woman" ~ "Woman",
                              "Total, gender" ~ "Total gender"))|>
@@ -669,9 +672,9 @@ for (prog_group in c('Doctoral', 'Masters', 'Undergraduate')){
                        levels = c(
                          "Woman",
                          "Man",
-                         "Non-binary person and Unknown gender")))|>
+                         "Non-binary person and\n Unknown gender")))|>
     dplyr::select(Date, VALUE, Gender)|>
-    bind_rows(data.frame( Date=as.Date("2012-07-01"),VALUE= NA, Gender = "Non-binary person and Unknown gender"))|>
+    bind_rows(data.frame( Date=as.Date("2012-07-01"),VALUE= NA, Gender = "Non-binary person and\n Unknown gender"))|>
     ggplot()+
     geom_line(aes(x = Date, y = VALUE, colour =  Gender))+
   ylab("Count")+
@@ -708,20 +711,20 @@ for (prog_group in c('doctorat', 'maîtrise', 'baccalauréat')){
       )) |> 
     bind_rows(data.frame( Date=as.Date("2012-07-01"),VALUE= NA, Gender = "Gender unknown"))|>
   mutate(Gender = case_match(Gender,
-                             "Gender unknown" ~ "Non-binary person and Unknown gender",
+                             "Gender unknown" ~ "Non-binary person and\n Unknown gender",
                              "Man" ~ "Man",
                              "Woman" ~ "Woman",
                              "Total, gender" ~ "Total gender"))|>
   dplyr::filter(Gender != "Total gender")|>
     mutate(sexe = case_match(Gender,
-                         "Non-binary person and Unknown gender" ~ "Personne non-binaire et genre inconnu",
+                         "Non-binary person and\n Unknown gender" ~ "Personne non-binaire et\n genre inconnu",
                          "Man" ~ "Homme",
                          "Woman" ~ "Femme"))|>
    mutate(sexe = factor(sexe,
                        levels = c(
                          "Femme",
                          "Homme",
-                         "Personne non-binaire et genre inconnu")))|>
+                         "Personne non-binaire et\n genre inconnu")))|>
     dplyr::filter(!Gender %in% c("Total, gender", "NA"))|>
      dplyr::select(Date, VALUE, Gender,sexe)|>
     ggplot()+
