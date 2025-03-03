@@ -1,5 +1,5 @@
 ## Updates
-- Mar 3 2025: Higher resolution poster uploaded
+- Mar 3 2025: Higher resolution poster uploaded, though the "slightly lower" resolution poster displays better online from Github.
 - Jan 8 2025: Updated plots using updated Stat Can gender categories and 2024 data.
 
 - May 31 2024: Final English poster is now online!!!!
