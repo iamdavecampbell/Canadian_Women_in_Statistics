@@ -2,7 +2,7 @@
 - Mar 3 2025: Higher resolution poster uploaded, though the "slightly lower" resolution poster displays better online from Github.
 - Jan 8 2025: Updated plots using updated Stat Can gender categories and 2024 data.
 
-- May 31 2024: Final English poster is now online!!!!
+- May 31 2024: Final English poster is now online!!!!  See the article in [Liaison:](https://ssc.ca/en/publications/ssc-liaison/vol-38-5-2024-08/a-timeline-firsts-women-statistics-canada)
 The LaTeX is still up to date, but we couldn't make a nice poster with code alone.  CANSSI Ontario provided design work.  The English poster is [here](https://github.com/iamdavecampbell/Canadian_Women_in_Statistics/blob/main/Firsts%20for%20Women%20in%20Statistics%20Poster%20%2036%20by%2075%20inches.pdf), 
 download the poster to view as might not render in the online Github.
 
