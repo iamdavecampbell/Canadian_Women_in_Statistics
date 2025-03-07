@@ -24,15 +24,19 @@ Even though using a binary definition of gender is out of date, more general div
 
 To improve the long term utility, the poster is under GNU GPL v3 so that it can be freely printed, updated, and modified to include regionally important events, names, milestones, or shift towards other diversity questions.
 
-## License
-The source code is licensed under GNU GPL v3, so that it can be freely distributed, modified, updated, and adapted.
-
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-
 ## Project by:
 - [Marieta-rita Osezua](https://www.linkedin.com/in/marietaritaosezua/) journalist, initial research and refined scope.
 - [Jeeheon Kim](https://www.linkedin.com/in/jeeheon-kim/) data science intern, additional research, prototype poster.
 - [Alina Rizwan](https://www.linkedin.com/in/alina-rizwan/), design of poster, editing.
+
+## Cite this work from the Zenodo public repository:
+Osezua, M., Kim, J., Rizwan, A., & Campbell, D. (2025). A Timeline of Firsts for Women in Statistics in Canada. Zenodo. https://doi.org/10.5281/zenodo.14984594
+
+
+## License
+The source code is licensed under GNU GPL v3, so that it can be freely distributed, modified, updated, and adapted.
+
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 
 ## Notes on translation:
