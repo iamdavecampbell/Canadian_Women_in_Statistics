@@ -228,16 +228,16 @@ data |> dplyr::filter(GEO == "Canada")|>
   select(where(~ n_distinct(.) > 1))|> 
   mutate(Gender = str_replace_all(Gender, pattern = "\n", replacement = "")) |> 
   dplyr::filter(Gender != "Total gender")|>
-  mutate(sexe = case_match(Gender,
-                                   "Non-binary person and Unknown gender" ~ "Personne non-binaire et \n genre inconnu",
+  mutate(Genre = case_match(Gender,
+                                   "Non-binary person and Unknown gender" ~ "Personne \n non-binaire et \n genre inconnu",
                                    "Man" ~ "Homme",
                                   "Woman" ~ "Femme"))|>
   
-  mutate(sexe = factor(sexe,
+  mutate(Genre = factor(Genre,
                        levels = c(
                          "Femme",
                          "Homme",
-                         "Personne non-binaire et \n genre inconnu")))|>
+                         "Personne \n non-binaire et \n genre inconnu")))|>
   mutate(Gender = str_replace_all(Gender, pattern = " gender", replacement = "")) |> 
   dplyr::filter(Staff.functions == "Total staff function")|>
   dplyr::filter(Number.and.median == "Number of full time teaching staff")|>
@@ -248,8 +248,8 @@ data |> dplyr::filter(GEO == "Canada")|>
          "Full professor"     ~ "Professeur(e) titulaire"))|>
 # dplyr::filter(Number.and.median == "Median age of full-time teaching staff")|>
   ggplot()+
-  geom_line(aes(x = Date, y = VALUE, colour = sexe))+
-  ylab("Taux")+
+  geom_line(aes(x = Date, y = VALUE, colour = Genre))+
+  ylab("Nombre")+
   facet_wrap(~factor(rang, levels=c('Professeur(e) titulaire', 'Professeur(e) agrégé(e)', 'Professeur(e) adjoint(e)')),scales = "free", ncol = 1)+
   theme_ipsum(plot_title_size = 16,
               axis_title_just = "c",
@@ -305,16 +305,16 @@ for (rank_group in c('Full professor', 'Associate professor', 'Assistant profess
   mutate(Gender = str_replace_all(Gender, pattern = "\n", replacement = "")) |> 
   # mutate(Gender = str_replace_all(Gender, pattern = "Another gender and unknown", replacement = "Other"))|>
   dplyr::filter(!Gender %in% c("Total gender"))|>
-  mutate(sexe = case_match(Gender,
-                         "Non-binary person and Unknown gender" ~ "Personne non-binaire et\n genre inconnu",
+  mutate(Genre = case_match(Gender,
+                         "Non-binary person and Unknown gender" ~ "Personne \n non-binaire et\n genre inconnu",
                          "Man" ~ "Homme",
                          "Woman" ~ "Femme"))|>
   
-  mutate(sexe = factor(sexe,
+  mutate(Genre = factor(Genre,
                        levels = c(
                          "Femme",
                          "Homme",
-                         "Personne non-binaire et\n genre inconnu")))|>
+                         "Personne \n non-binaire et\n genre inconnu")))|>
   mutate(Gender = str_replace_all(Gender, pattern = " gender", replacement = "")) |> 
   dplyr::filter(Staff.functions == "Total staff function")|>
   dplyr::filter(Number.and.median == "Number of full time teaching staff")|>
@@ -324,8 +324,8 @@ for (rank_group in c('Full professor', 'Associate professor', 'Assistant profess
          "Full professor"     ~ "Professeur(e) titulaire"))|>
 # dplyr::filter(Number.and.median == "Median age of full-time teaching staff")|>
   ggplot()+
-  geom_line(aes(x = Date, y = VALUE, colour = sexe))+
-  ylab("Taux")+
+  geom_line(aes(x = Date, y = VALUE, colour = Genre))+
+  ylab("Nombre")+
   ggtitle(paste0("Nombre de ",
                  case_match(rank_group,
          "Assistant professor" ~ "Professeur(e) adjoint(e)", 
@@ -610,19 +610,19 @@ data |> dplyr::filter(GEO == "Canada")|>
                              "Woman" ~ "Woman",
                              "Total, gender" ~ "Total gender"))|>
     dplyr::filter(Gender != "Total gender")|>
-  mutate(sexe = case_match(Gender,
-                         "Non-binary person and\n Unknown gender" ~ "Personne non-binaire et\n genre inconnu",
+  mutate(Genre = case_match(Gender,
+                         "Non-binary person and\n Unknown gender" ~ "Personne \n non-binaire et\n genre inconnu",
                          "Man" ~ "Homme",
                          "Woman" ~ "Femme"))|>
-   mutate(sexe = factor(sexe,
+   mutate(Genre = factor(Genre,
                        levels = c(
                          "Femme",
                          "Homme",
-                         "Personne non-binaire et\n genre inconnu")))|>
+                         "Personne \n non-binaire et\n genre inconnu")))|>
     dplyr::filter(!Gender %in% c("Total, gender", "NA"))|>
     ggplot()+
-    geom_line(aes(x = Date, y = VALUE, colour =  sexe))+
-  ylab("Taux")+
+    geom_line(aes(x = Date, y = VALUE, colour =  Genre))+
+  ylab("Nombre")+
     facet_wrap(~factor(Program.type , levels = c(
       "doctorat","maîtrise","baccalauréat")), 
       scales = "free", ncol = 1)+
@@ -630,7 +630,7 @@ data |> dplyr::filter(GEO == "Canada")|>
               axis_title_just = "c",
               axis_title_size = 12,
               caption_size = 12)+
-  ggtitle(paste0( "Diplômés en mathématiques et statistiques"))  
+  ggtitle(paste0( "Diplômé(e)s en mathématiques et statistiques"))  
 # ggsave(width = 6,  height = 6,units = "in",filename = "Graduates per Gender in Mathematics and statistics, \n all student types_fr_2.png")
 
 
@@ -668,13 +668,14 @@ for (prog_group in c('Doctoral', 'Masters', 'Undergraduate')){
                                   "Woman" ~ "Woman",
                              "Total, gender" ~ "Total gender"))|>
     dplyr::filter(Gender != "Total gender")|>
+    bind_rows(data.frame( Date=as.Date("2012-07-01"),VALUE= NA, Gender = "Non-binary person and\n Unknown gender"))|>
       mutate(Gender = factor(Gender,
                        levels = c(
                          "Woman",
                          "Man",
                          "Non-binary person and\n Unknown gender")))|>
     dplyr::select(Date, VALUE, Gender)|>
-    bind_rows(data.frame( Date=as.Date("2012-07-01"),VALUE= NA, Gender = "Non-binary person and\n Unknown gender"))|>
+    
     ggplot()+
     geom_line(aes(x = Date, y = VALUE, colour =  Gender))+
   ylab("Count")+
@@ -716,26 +717,26 @@ for (prog_group in c('doctorat', 'maîtrise', 'baccalauréat')){
                              "Woman" ~ "Woman",
                              "Total, gender" ~ "Total gender"))|>
   dplyr::filter(Gender != "Total gender")|>
-    mutate(sexe = case_match(Gender,
-                         "Non-binary person and\n Unknown gender" ~ "Personne non-binaire et\n genre inconnu",
+    mutate(Genre = case_match(Gender,
+                         "Non-binary person and\n Unknown gender" ~ "Personne \n non-binaire et\n genre inconnu",
                          "Man" ~ "Homme",
                          "Woman" ~ "Femme"))|>
-   mutate(sexe = factor(sexe,
+   mutate(Genre = factor(Genre,
                        levels = c(
                          "Femme",
                          "Homme",
-                         "Personne non-binaire et\n genre inconnu")))|>
+                         "Personne \n non-binaire et\n genre inconnu")))|>
     dplyr::filter(!Gender %in% c("Total, gender", "NA"))|>
-     dplyr::select(Date, VALUE, Gender,sexe)|>
+     dplyr::select(Date, VALUE, Gender,Genre)|>
     ggplot()+
-    geom_line(aes(x = Date, y = VALUE, colour =  sexe))+
-  ylab("Taux")+
+    geom_line(aes(x = Date, y = VALUE, colour =  Genre))+
+  ylab("Nombre")+
   theme_ipsum(plot_title_size = 12,
               axis_title_just = "c",
               axis_title_size = 12,
               caption_size = 12)+
     expand_limits(y=0) +
-  ggtitle(paste0( "Diplômés de ",prog_group," en mathématiques et statistiques"))  
+  ggtitle(paste0( "Diplômé(e)s de ",prog_group," en mathématiques et statistiques"))  
  ggsave(width = 6,  height = 3,units = "in",filename = paste0("Graduates per Gender in Mathematics and statistics, ", prog_group, "_fr_2.png"))
 }
 
