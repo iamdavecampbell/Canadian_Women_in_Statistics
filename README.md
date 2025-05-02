@@ -28,6 +28,7 @@ To improve the long term utility, the poster is under GNU GPL v3 so that it can 
 - [Marieta-rita Osezua](https://www.linkedin.com/in/marietaritaosezua/) journalist, initial research and refined scope.
 - [Jeeheon Kim](https://www.linkedin.com/in/jeeheon-kim/) data science intern, additional research, prototype poster.
 - [Alina Rizwan](https://www.linkedin.com/in/alina-rizwan/), design of poster, editing.
+- [Sofia Balanceanu](https://www.linkedin.com/in/sofia-balaceanu-67790730b/), French editing
 
 ## Cite this work from the Zenodo public repository:
 Osezua, M., Kim, J., Rizwan, A., & Campbell, D. (2025). A Timeline of Firsts for Women in Statistics in Canada. Zenodo. https://doi.org/10.5281/zenodo.14984594
