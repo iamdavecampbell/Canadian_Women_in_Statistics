@@ -1,3 +1,11 @@
+## Official repo for the final poster:
+
+[https://zenodo.org/records/15512669](https://zenodo.org/records/15512669)
+
+Citation:
+Osezua, M.-. rita ., Kim, J., Rizwan, A., & Campbell, D. (2025). A Timeline of Firsts for Women in Statistics in Canada. Zenodo. https://doi.org/10.5281/zenodo.15512669
+
+
 ## Updates
 - Mar 3 2025: Higher resolution poster uploaded, though the "slightly lower" resolution poster displays better online from Github.
 - Jan 8 2025: Updated plots using updated Stat Can gender categories and 2024 data.
