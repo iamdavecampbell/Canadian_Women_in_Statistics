@@ -5,6 +5,8 @@
 Citation:
 Osezua, M.-. rita ., Kim, J., Rizwan, A., & Campbell, D. (2025). A Timeline of Firsts for Women in Statistics in Canada. Zenodo. https://doi.org/10.5281/zenodo.15512669
 
+The folders contain the original LaTeX version when we were intending to make this poster open source and easily modifiable.  Unfortunately, that conflicted with teh other goal of making it look nice.  Poster scraps remain in the folders.  Completed poster is in png and pdf (better for printing) in both languages in this repo.
+
 
 ## Updates
 - Mar 3 2025: Higher resolution poster uploaded, though the "slightly lower" resolution poster displays better online from Github.
