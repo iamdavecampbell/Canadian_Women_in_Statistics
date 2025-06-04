@@ -234,6 +234,9 @@ data |> dplyr::filter(GEO == "Canada")|>
 =======
   mutate(sexe = case_match(Gender,
                                    "Non-binary person and Unknown gender" ~ "Personne non-binaire et \n genre inconnu",
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
                                    "Man" ~ "Homme",
                                   "Woman" ~ "Femme"))|>
@@ -243,7 +246,11 @@ data |> dplyr::filter(GEO == "Canada")|>
                          "Femme",
                          "Homme",
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                          "Personne \n non-binaire et \n genre inconnu")))|>
+=======
+                         "Personne non-binaire et \n genre inconnu")))|>
+>>>>>>> Stashed changes
 =======
                          "Personne non-binaire et \n genre inconnu")))|>
 >>>>>>> Stashed changes
@@ -320,6 +327,9 @@ for (rank_group in c('Full professor', 'Associate professor', 'Assistant profess
 =======
   mutate(sexe = case_match(Gender,
                          "Non-binary person and Unknown gender" ~ "Personne non-binaire et\n genre inconnu",
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
                          "Man" ~ "Homme",
                          "Woman" ~ "Femme"))|>
@@ -329,7 +339,11 @@ for (rank_group in c('Full professor', 'Associate professor', 'Assistant profess
                          "Femme",
                          "Homme",
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                          "Personne \n non-binaire et\n genre inconnu")))|>
+=======
+                         "Personne non-binaire et\n genre inconnu")))|>
+>>>>>>> Stashed changes
 =======
                          "Personne non-binaire et\n genre inconnu")))|>
 >>>>>>> Stashed changes
@@ -634,6 +648,9 @@ data |> dplyr::filter(GEO == "Canada")|>
 =======
   mutate(sexe = case_match(Gender,
                          "Non-binary person and\n Unknown gender" ~ "Personne non-binaire et\n genre inconnu",
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
                          "Man" ~ "Homme",
                          "Woman" ~ "Femme"))|>
@@ -642,7 +659,11 @@ data |> dplyr::filter(GEO == "Canada")|>
                          "Femme",
                          "Homme",
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                          "Personne \n non-binaire et\n genre inconnu")))|>
+=======
+                         "Personne non-binaire et\n genre inconnu")))|>
+>>>>>>> Stashed changes
 =======
                          "Personne non-binaire et\n genre inconnu")))|>
 >>>>>>> Stashed changes
@@ -703,7 +724,11 @@ for (prog_group in c('Doctoral', 'Masters', 'Undergraduate')){
                          "Non-binary person and\n Unknown gender")))|>
     dplyr::select(Date, VALUE, Gender)|>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     
+=======
+    bind_rows(data.frame( Date=as.Date("2012-07-01"),VALUE= NA, Gender = "Non-binary person and\n Unknown gender"))|>
+>>>>>>> Stashed changes
 =======
     bind_rows(data.frame( Date=as.Date("2012-07-01"),VALUE= NA, Gender = "Non-binary person and\n Unknown gender"))|>
 >>>>>>> Stashed changes
@@ -754,6 +779,9 @@ for (prog_group in c('doctorat', 'maîtrise', 'baccalauréat')){
 =======
     mutate(sexe = case_match(Gender,
                          "Non-binary person and\n Unknown gender" ~ "Personne non-binaire et\n genre inconnu",
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
                          "Man" ~ "Homme",
                          "Woman" ~ "Femme"))|>
@@ -762,7 +790,11 @@ for (prog_group in c('doctorat', 'maîtrise', 'baccalauréat')){
                          "Femme",
                          "Homme",
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                          "Personne \n non-binaire et\n genre inconnu")))|>
+=======
+                         "Personne non-binaire et\n genre inconnu")))|>
+>>>>>>> Stashed changes
 =======
                          "Personne non-binaire et\n genre inconnu")))|>
 >>>>>>> Stashed changes
