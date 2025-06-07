@@ -1,9 +1,12 @@
-## Official repo for the final poster:
+## The repo is archived as of June 2025
+This folder contains some early drafts related to the poster and the completed English and French versions.  Cite them and find the most up to date versions in the **EDIT-STEM** community on **Zenodo**
 
-[https://zenodo.org/records/15512669](https://zenodo.org/records/15512669)
-
-Citation:
+English Citation:
 Osezua, M.-. rita ., Kim, J., Rizwan, A., & Campbell, D. (2025). A Timeline of Firsts for Women in Statistics in Canada. Zenodo. https://doi.org/10.5281/zenodo.15512669
+
+French Citation:
+Osezua, M.-. rita ., Kim, J., Rizwan, A., Balaceanu, S., Benhamida, L., & Campbell, D. (2025). Chronologie des premières pour les femmes en statistique au Canada. Zenodo. https://doi.org/10.5281/zenodo.15594442
+
 
 The folders contain the original LaTeX version when we were intending to make this poster open source and easily modifiable.  Unfortunately, that conflicted with teh other goal of making it look nice.  Poster scraps remain in the folders.  Completed poster is in png and pdf (better for printing) in both languages in this repo.
 
@@ -39,9 +42,6 @@ To improve the long term utility, the poster is under GNU GPL v3 so that it can 
 - [Jeeheon Kim](https://www.linkedin.com/in/jeeheon-kim/) data science intern, additional research, prototype poster.
 - [Alina Rizwan](https://www.linkedin.com/in/alina-rizwan/), design of poster, editing.
 - [Sofia Balanceanu](https://www.linkedin.com/in/sofia-balaceanu-67790730b/), French editing
-
-## Cite this work from the Zenodo public repository:
-Osezua, M., Kim, J., Rizwan, A., & Campbell, D. (2025). A Timeline of Firsts for Women in Statistics in Canada. Zenodo. https://doi.org/10.5281/zenodo.14984594
 
 
 ## License
