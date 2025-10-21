@@ -10,6 +10,8 @@ Osezua, M.-. rita ., Kim, J., Rizwan, A., Balaceanu, S., Benhamida, L., & Campbe
 
 The folders contain the original LaTeX version when we were intending to make this poster open source and easily modifiable.  Unfortunately, that conflicted with teh other goal of making it look nice.  Poster scraps remain in the folders.  Completed poster is in png and pdf (better for printing) in both languages in this repo.
 
+### Occasionally we will add entries to the LaTeX version 
+Submit them as a pull request.  Unfortunately, adding entries will require a rework of the poster in designer software so will probably only be performed in batches every few years.
 
 ## Updates
 - Mar 3 2025: Higher resolution poster uploaded, though the "slightly lower" resolution poster displays better online from Github.
